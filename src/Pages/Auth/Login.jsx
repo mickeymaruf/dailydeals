@@ -4,12 +4,20 @@ import { useAuth } from '../../contexts/AuthProvider';
 import SocialAuth from './SocialAuth';
 import { useForm } from 'react-hook-form';
 import FieldError from '../../components/FieldError';
+import toast from 'react-hot-toast';
 
 const Login = () => {
     const { login } = useAuth();
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = data => {
-        console.log(data)
+        login(data.email, data.password)
+            .then(result => {
+                // 
+            })
+            .catch(err => {
+                toast.error(err.message)
+                console.log(err);
+            });
     }
     return (
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100 mx-auto my-20">

@@ -1,7 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthProvider';
 
 const Navbar = () => {
+    const { user, logOut } = useAuth();
+    const handleLogout = () => {
+        logOut()
+            .then(() => { })
+            .catch(err => console.log(err))
+    }
     const navLinks = <>
         <li className='rounded-lg'><Link to="/dashboard">Dashboard</Link></li>
         <li className='rounded-lg'><Link to="/products">Products</Link></li>
@@ -27,9 +34,12 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end">
-                    <Link to="/login">
-                        <button className="btn btn-warning">Login</button>
-                    </Link>
+                    {
+                        user ?
+                            <button onClick={handleLogout} className="btn btn-warning">Logout</button>
+                            :
+                            <Link to="/login"><button className="btn btn-warning">Login</button></Link>
+                    }
                 </div>
             </div>
         </div>
