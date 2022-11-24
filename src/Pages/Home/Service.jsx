@@ -6,7 +6,7 @@ import Heading from '../../components/Heading';
 
 const Service = () => {
     return (
-        <> 
+        <>
             <Heading>Services</Heading>
             <div className='flex flex-col lg:flex-row shadow-lg border'>
                 <div className="flex-1 flex p-5 items-center border-b border-r">
@@ -17,7 +17,8 @@ const Service = () => {
                         <h2 className="card-title">Benifit of Exchanging P2P</h2>
                         <p className='text-sm my-1'>
                             Do you have something to sell?
-                            Post your first ad and start making money!</p>
+                            Post your first ad and start making money!
+                        </p>
                         <div className="card-actions mt-3">
                             <button className="btn btn-info rounded-full px-10 text-white">
                                 <BiPlusCircle className='w-5 h-5 mr-2' /> Add Item

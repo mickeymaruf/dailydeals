@@ -13,12 +13,12 @@ const Products = () => {
                     <div>
                         <h2 className="card-title">HP Elite 840 G2</h2>
                         <div className="badge badge-primary badge-outline">Seller</div>
-                        <p className='text-sm text-accent mt-1'>
+                        <div className='text-sm text-accent mt-1'>
                             Maruf Hossain
                             <div className="tooltip tooltip-right tooltip-info text-white" data-tip="Verified">
                                 <MdVerified className='inline text-info w-4 h-4 ml-1' />
                             </div>
-                        </p>
+                        </div>
                         <p className='text-sm text-accent mt-1'><ImLocation className='inline w-4 h-4' /> Dhaka</p>
                         <p className='text-primary font-medium'>Resale Price: 7000TK</p>
                         <p className='text-primary font-medium'>Original Price: 14000TK</p>
@@ -36,12 +36,12 @@ const Products = () => {
                     <div>
                         <h2 className="card-title">HP Elite 840 G2</h2>
                         <div className="badge badge-primary badge-outline">Seller</div>
-                        <p className='text-sm text-accent mt-1'>
+                        <div className='text-sm text-accent mt-1'>
                             Maruf Hossain
                             <div className="tooltip tooltip-right tooltip-info text-white" data-tip="Verified">
                                 <MdVerified className='inline text-info w-4 h-4 ml-1' />
                             </div>
-                        </p>
+                        </div>
                         <p className='text-sm text-accent mt-1'><ImLocation className='inline w-4 h-4' /> Dhaka</p>
                         <p className='text-primary font-medium'>Resale Price: 7000TK</p>
                         <p className='text-primary font-medium'>Original Price: 14000TK</p>
