@@ -25,7 +25,7 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end">
-                    <a className="btn btn-warning">Get started</a>
+                    <a className="btn btn-warning">Login</a>
                 </div>
             </div>
         </div>

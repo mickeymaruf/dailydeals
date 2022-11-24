@@ -13,7 +13,7 @@ module.exports = {
 
           "secondary": "#10b981",
 
-          "accent": "#1FB2A6",
+          "accent": "#6b7280",
 
           "neutral": "#374151",
 
@@ -26,6 +26,7 @@ module.exports = {
           "warning": "#FBBD23",
 
           "error": "#f87171",
+
         },
       },
     ],
