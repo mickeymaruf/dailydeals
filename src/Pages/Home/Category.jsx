@@ -1,19 +1,12 @@
-import React from 'react';
-import brand from '../../assets/images/brands/dell.png'
+import React, { useContext } from 'react';
 import Heading from '../../components/Heading';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import axios from 'axios'
-import { useQuery } from '@tanstack/react-query'
 import Spinner from '../../components/Spinner';
 import { Link } from 'react-router-dom';
+import { CategoryContext } from '../../contexts/CategoryProvider';
 
 const Category = () => {
-    const { data: categories, isLoading } = useQuery({
-        queryKey: ['categories'],
-        queryFn: () => axios.get(`${import.meta.env.VITE_APP_API_URL}/categories`)
-            .then(data => data.data)
-    })
-
+    const { categories, isLoading } = useContext(CategoryContext);
     return (
         <div className='py-20'>
             <Heading>Find Laptop By Categories</Heading>
