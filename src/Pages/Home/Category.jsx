@@ -1,11 +1,7 @@
 import React from 'react';
 import brand from '../../assets/images/brands/dell.png'
-// Import Swiper React components
-import { Swiper, SwiperSlide } from 'swiper/react';
-
-// Import Swiper styles
-import 'swiper/css';
 import Heading from '../../components/Heading';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 const Category = () => {
     // const swiper = new Swiper('.swiper', {
