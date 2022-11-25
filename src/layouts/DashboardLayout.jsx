@@ -5,7 +5,7 @@ import Footer from '../Pages/Shared/Footer';
 import Navbar from '../Pages/Shared/Navbar';
 
 const DashboardLayout = () => {
-    const { user } = useAuth();
+    const { user, userRole } = useAuth();
     return (
         <div>
             <Navbar />
@@ -32,9 +32,14 @@ const DashboardLayout = () => {
                                 <li className='rounded-none'><Link to="/dashboard/myorders">My orders</Link></li>
                                 <li className='rounded-none'><Link to="/dashboard/myproducts">My Products</Link></li>
                                 <li className='py-1 rounded-none'><Link to="/dashboard/addproduct">Add A Product</Link></li>
-                                <li className='py-1 rounded-none'><Link to="/dashboard/allsellers">All Sellers</Link></li>
-                                <li className='py-1 rounded-none'><Link to="/dashboard/allbuyers">All Buyers</Link></li>
-                                <li className='rounded-none'><Link to="/dashboard/addproduct">Reported Items</Link></li>
+                                {
+                                    userRole === "admin" &&
+                                    <>
+                                        <li className='py-1 rounded-none'><Link to="/dashboard/allsellers">All Sellers</Link></li>
+                                        <li className='py-1 rounded-none'><Link to="/dashboard/allbuyers">All Buyers</Link></li>
+                                        <li className='rounded-none'><Link to="/dashboard/reporteditems">Reported Items</Link></li>
+                                    </>
+                                }
                             </div>
                         </ul>
                     </div>

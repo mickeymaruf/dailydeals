@@ -1,15 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import {
-    getAuth,
-    signInWithEmailAndPassword,
-    onAuthStateChanged,
-    createUserWithEmailAndPassword,
-    updateProfile,
-    signInWithPopup,
-    signOut
-
-} from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, createUserWithEmailAndPassword, updateProfile, signInWithPopup, signOut } from 'firebase/auth';
 import app from '../firebase/firebase.config';
+import useUserRole from '../hooks/useUserRole';
 
 const AuthContext = createContext();
 const auth = getAuth(app);
@@ -17,6 +9,9 @@ const auth = getAuth(app);
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    const [userRole, userRoleIsLoading] = useUserRole(user?.email);
+
     const login = (email, password) => {
         setLoading(true);
         return signInWithEmailAndPassword(auth, email, password);
@@ -39,6 +34,8 @@ const AuthProvider = ({ children }) => {
     }
     const value = {
         user,
+        userRole,
+        userRoleIsLoading,
         loading,
         login,
         logOut,

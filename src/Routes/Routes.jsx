@@ -13,6 +13,8 @@ import AllBuyers from "../Pages/Dashboard/Admin/AllBuyers";
 import MyOrders from "../Pages/Dashboard/Buyer/MyOrders";
 import Blog from "../Pages/Others/Blog";
 import RequireAuth from "./RequireAuth";
+import ReportedItems from "../Pages/Dashboard/Admin/ReportedItems";
+import AdminRoute from "./AdminRoute";
 
 const router = createBrowserRouter([
     {
@@ -69,11 +71,15 @@ const router = createBrowserRouter([
             },
             {
                 path: '/dashboard/allsellers',
-                element: <AllSellers />
+                element: <AdminRoute><AllSellers /></AdminRoute>
             },
             {
                 path: '/dashboard/allbuyers',
-                element: <AllBuyers />
+                element: <AdminRoute><AllBuyers /></AdminRoute>
+            },
+            {
+                path: '/dashboard/reporteditems',
+                element: <AdminRoute><ReportedItems /></AdminRoute>
             },
         ]
     }

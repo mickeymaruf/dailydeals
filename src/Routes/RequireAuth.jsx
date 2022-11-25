@@ -1,6 +1,5 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import Spinner from '../components/Spinner';
 import { useAuth } from '../contexts/AuthProvider';
 import PageLoading from '../Pages/Shared/PageLoading';
 
