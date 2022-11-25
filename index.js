@@ -23,7 +23,25 @@ async function run() {
             const categories = await categoriesCollection.find({}).toArray();
             res.send(categories);
         })
-        // product
+        // products
+        app.get('/products', async (req, res) => {
+            const products = await productsCollection.find({}).toArray();
+            res.send(products);
+        })
+        // get products by seller email
+        app.get('/products', async (req, res) => {
+            const email = req.query.email;
+            const query = { sellerEmail: email };
+            const products = await productsCollection.find(query).toArray();
+            res.send(products);
+        })
+        // get products by category
+        app.get('/products/category/:category_slug', async (req, res) => {
+            const category_slug = req.params.category_slug;
+            const query = { category: category_slug };
+            const products = await productsCollection.find(query).toArray();
+            res.send(products);
+        })
         app.post('/products', async (req, res) => {
             const product = req.body;
             // adding date & time
