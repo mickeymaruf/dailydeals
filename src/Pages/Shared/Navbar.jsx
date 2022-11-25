@@ -10,7 +10,10 @@ const Navbar = () => {
             .catch(err => console.log(err))
     }
     const navLinks = <>
-        <li className='rounded-lg'><Link to="/dashboard">Dashboard</Link></li>
+        {
+            user &&
+            <li className='rounded-lg'><Link to="/dashboard">Dashboard</Link></li>
+        }
         <li className='rounded-lg'><Link to="/products">Products</Link></li>
         <li className='rounded-lg'><Link to="/blog">Blog</Link></li>
     </>

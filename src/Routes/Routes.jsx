@@ -12,6 +12,7 @@ import AllSellers from "../Pages/Dashboard/Admin/AllSellers";
 import AllBuyers from "../Pages/Dashboard/Admin/AllBuyers";
 import MyOrders from "../Pages/Dashboard/Buyer/MyOrders";
 import Blog from "../Pages/Others/Blog";
+import RequireAuth from "./RequireAuth";
 
 const router = createBrowserRouter([
     {
@@ -46,19 +47,9 @@ const router = createBrowserRouter([
             },
         ]
     },
-    // {
-    //     path: '/products',
-    //     element: <ProductsLayout />,
-    //     children: [
-    //         {
-    //             path: '/products/category/:category_slug',
-    //             element: <Products />
-    //         }
-    //     ]
-    // },
     {
         path: '/dashboard',
-        element: <DashboardLayout />,
+        element: <RequireAuth><DashboardLayout /></RequireAuth>,
         children: [
             {
                 path: '/dashboard',

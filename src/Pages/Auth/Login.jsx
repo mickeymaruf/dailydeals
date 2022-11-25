@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthProvider';
 import SocialAuth from './SocialAuth';
 import { useForm } from 'react-hook-form';
@@ -8,11 +8,15 @@ import toast from 'react-hot-toast';
 
 const Login = () => {
     const { login } = useAuth();
+    const location = useLocation();
+    const navigate = useNavigate();
+    const from = location.state?.from?.pathname || "/";
+
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = data => {
         login(data.email, data.password)
             .then(result => {
-                // 
+                navigate(from, { replace: true });
             })
             .catch(err => {
                 toast.error(err.message)
