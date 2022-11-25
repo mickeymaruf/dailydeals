@@ -15,6 +15,7 @@ import Blog from "../Pages/Others/Blog";
 import RequireAuth from "./RequireAuth";
 import ReportedItems from "../Pages/Dashboard/Admin/ReportedItems";
 import AdminRoute from "./AdminRoute";
+import SellerRoute from "./SellerRoute";
 
 const router = createBrowserRouter([
     {
@@ -63,11 +64,11 @@ const router = createBrowserRouter([
             },
             {
                 path: '/dashboard/myproducts',
-                element: <MyProducts />
+                element: <SellerRoute><MyProducts /></SellerRoute>
             },
             {
                 path: '/dashboard/addproduct',
-                element: <AddProduct />
+                element: <SellerRoute><AddProduct /></SellerRoute>
             },
             {
                 path: '/dashboard/allsellers',

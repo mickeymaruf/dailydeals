@@ -29,9 +29,19 @@ const DashboardLayout = () => {
                             </div>
                             <p className='mb-2 text-black font-medium'>Dashboard</p>
                             <div className='bg-base-100 text-black p-1'>
-                                <li className='rounded-none'><Link to="/dashboard/myorders">My orders</Link></li>
-                                <li className='rounded-none'><Link to="/dashboard/myproducts">My Products</Link></li>
-                                <li className='py-1 rounded-none'><Link to="/dashboard/addproduct">Add A Product</Link></li>
+                                {
+                                    userRole === "buyer" &&
+                                    <>
+                                        <li className='rounded-none'><Link to="/dashboard/myorders">My orders</Link></li>
+                                    </>
+                                }
+                                {
+                                    userRole === "seller" &&
+                                    <>
+                                        <li className='rounded-none'><Link to="/dashboard/myproducts">My Products</Link></li>
+                                        <li className='py-1 rounded-none'><Link to="/dashboard/addproduct">Add A Product</Link></li>
+                                    </>
+                                }
                                 {
                                     userRole === "admin" &&
                                     <>
