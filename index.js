@@ -17,22 +17,18 @@ async function run() {
         const db = client.db("dailydeals");
         const categoriesCollection = db.collection("categories");
         const productsCollection = db.collection("products");
+        const bookingsCollection = db.collection("bookings");
+        const usersCollection = db.collection("users");
 
         // categories
         app.get('/categories', async (req, res) => {
             const categories = await categoriesCollection.find({}).toArray();
             res.send(categories);
         })
+
         // products
         app.get('/products', async (req, res) => {
             const products = await productsCollection.find({}).toArray();
-            res.send(products);
-        })
-        // get products by seller email
-        app.get('/products', async (req, res) => {
-            const email = req.query.email;
-            const query = { sellerEmail: email };
-            const products = await productsCollection.find(query).toArray();
             res.send(products);
         })
         // get products by category
@@ -49,6 +45,27 @@ async function run() {
             product.createdAt = createdAt;
 
             const result = await productsCollection.insertOne(product);
+            res.send(result);
+        })
+        // get products by seller email
+        app.get('/myproducts', async (req, res) => {
+            const email = req.query.email;
+            const query = { sellerEmail: email };
+            const products = await productsCollection.find(query).toArray();
+            res.send(products);
+        })
+
+        // bookings
+        app.post('/bookings', async (req, res) => {
+            const booking = req.body;
+            const result = await bookingsCollection.insertOne(booking);
+            res.send(result);
+        })
+
+        // users
+        app.post('/users', async (req, res) => {
+            const user = req.body;
+            const result = await usersCollection.insertOne(user);
             res.send(result);
         })
     } finally {
