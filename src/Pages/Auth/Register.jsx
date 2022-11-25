@@ -6,6 +6,7 @@ import FieldError from '../../components/FieldError';
 import { useAuth } from '../../contexts/AuthProvider';
 import toast from 'react-hot-toast';
 import uploadImage from '../../apis/uploadImage';
+import { saveUser } from '../../apis/users';
 
 const Register = () => {
     const { createUser, updateUser } = useAuth();
@@ -25,13 +26,31 @@ const Register = () => {
                     // create user
                     createUser(email, password)
                         .then(result => {
+                            const user = result.user;
                             updateUser(name, photoURL)
-                                .then(result => {
-                                    navigate("/");
-                                    toast.success("Registration successfull");
+                                .then(() => {
+                                    // save user to the db
+                                    saveUser({
+                                        name: user.displayName,
+                                        email: user.email,
+                                        role: "buyer"
+                                    })
+                                        .then(userResult => {
+                                            if (userResult.insertedId) {
+                                                navigate("/");
+                                                toast.success("Registration successfull");
+                                            }
+                                        })
+                                        .catch(err => {
+                                            toast.error(err.message)
+                                            console.log(err);
+                                        })
                                 })
                         })
-                        .catch(err => console.log(err))
+                        .catch(err => {
+                            toast.error(err.message)
+                            console.log(err);
+                        })
                 }
             })
             .catch(err => console.log(err))

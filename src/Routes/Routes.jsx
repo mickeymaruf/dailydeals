@@ -37,12 +37,12 @@ const router = createBrowserRouter([
             },
             {
                 path: '/products',
-                element: <Products />,
-                loader: () => fetch(`${import.meta.env.VITE_APP_API_URL}/products`)
+                element: <RequireAuth><Products /></RequireAuth>,
+                loader: () => fetch(`${import.meta.env.VITE_APP_API_URL}/products`),
             },
             {
                 path: '/products/category/:slug',
-                element: <Products />,
+                element: <RequireAuth><Products /></RequireAuth>,
                 loader: ({ params }) => fetch(`${import.meta.env.VITE_APP_API_URL}/products/category/${params.slug}`)
             },
         ]

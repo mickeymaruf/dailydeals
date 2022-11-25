@@ -3,15 +3,17 @@ import { FcGoogle } from 'react-icons/fc';
 import { GoogleAuthProvider } from "firebase/auth";
 import { useAuth } from '../../contexts/AuthProvider';
 import toast from 'react-hot-toast';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const googleProvider = new GoogleAuthProvider();
 
 const SocialAuth = () => {
     const { providerLogin } = useAuth();
+    const navigate = useNavigate();
     const handleProviderLogin = () => {
         providerLogin(googleProvider)
             .then(result => {
-                // 
+                navigate("/");
             })
             .catch(err => {
                 toast.error(err.message);

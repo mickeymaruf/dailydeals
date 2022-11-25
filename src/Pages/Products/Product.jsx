@@ -3,7 +3,7 @@ import { ImLocation } from 'react-icons/im';
 import { MdVerified } from 'react-icons/md';
 import moment from 'moment';
 
-const Product = ({ product }) => {
+const Product = ({ product, setModalData }) => {
     const { category, name, image, price, priceOriginal, contact, location, used, createdAt } = product;
     return (
         <div className="flex bg-white border border-warning">
@@ -35,7 +35,7 @@ const Product = ({ product }) => {
                     <p className='text-sm text-accent'>Used: {used} Year{used > 1 && 's'}</p>
                     <p className='text-sm text-accent'>Posted at: {moment(createdAt).format("h:mm a")}</p>
                 </div>
-                <button className="btn btn-primary">Book Now</button>
+                <label onClick={() => setModalData(product)} htmlFor="bookingModal" className="btn btn-primary">Book Now</label>
             </div>
         </div>
     );

@@ -8,7 +8,7 @@ const MyProducts = () => {
     const { user } = useAuth();
     const { data: products = [] } = useQuery({
         queryKey: ['products', user?.email],
-        queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/products?email=${user?.email}`)
+        queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/myproducts?email=${user?.email}`)
             .then(res => res.json())
     })
 
