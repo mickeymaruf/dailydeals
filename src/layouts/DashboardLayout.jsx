@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthProvider';
 import Footer from '../Pages/Shared/Footer';
 import Navbar from '../Pages/Shared/Navbar';
 
 const DashboardLayout = () => {
+    const { user } = useAuth();
     return (
         <div>
             <Navbar />
@@ -20,10 +22,10 @@ const DashboardLayout = () => {
                             <div className='text-sm text-accent mb-1 border-b pb-2'>
                                 <div className="avatar online">
                                     <div className="w-12 rounded-full">
-                                        <img src="https://placeimg.com/192/192/people" />
+                                        <img src={user?.photoURL} />
                                     </div>
                                 </div>
-                                <p>Maruf Hossain</p>
+                                <p>{user?.displayName}</p>
                             </div>
                             <p className='mb-2 text-black font-medium'>Dashboard</p>
                             <div className='bg-base-100 text-black p-1'>

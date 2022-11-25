@@ -6,7 +6,6 @@ import FieldError from '../../components/FieldError';
 import { useAuth } from '../../contexts/AuthProvider';
 import toast from 'react-hot-toast';
 import uploadImage from '../../apis/uploadImage';
-// import imgBBUpload from '../../apis/imgBBUpload';
 
 const Register = () => {
     const { createUser, updateUser } = useAuth();
@@ -15,9 +14,10 @@ const Register = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = data => {
         const { name, email, password, picture } = data;
+
+        // upload image
         const formData = new FormData();
         formData.append('image', picture[0]);
-        // upload image
         uploadImage(formData)
             .then(imageData => {
                 if (imageData.status === 200) {

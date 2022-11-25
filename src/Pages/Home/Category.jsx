@@ -35,7 +35,7 @@ const Category = () => {
                     isLoading ?
                         <Spinner />
                         :
-                        categories.map(category => <SwiperSlide key={category._id}>
+                        categories?.map(category => <SwiperSlide key={category._id}>
                             <div className="text-center">
                                 <Link to={`/products/category/${category.slug}`}>
                                     <img className='mb-2 shadow-md prevent-select' src={category.image} alt="" />

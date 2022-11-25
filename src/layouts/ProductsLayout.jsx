@@ -18,7 +18,7 @@ const ProductsLayout = () => {
                             isLoading ?
                                 <progress className="progress progress-primary w-full"></progress>
                                 :
-                                categories.map(category => <li key={category._id}>
+                                categories?.map(category => <li key={category._id}>
                                     <Link to={`/products/category/${category.slug}`}>{category.name}</Link>
                                 </li>)
                         }
