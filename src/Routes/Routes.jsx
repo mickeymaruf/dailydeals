@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
 import DashboardLayout from "../layouts/DashboardLayout";
-import ProductsLayout from "../layouts/ProductsLayout";
 import Root from "../layouts/Root";
 import Login from "../Pages/Auth/Login";
 import Register from "../Pages/Auth/Register";
@@ -35,18 +34,28 @@ const router = createBrowserRouter([
                 path: '/blog',
                 element: <Blog />
             },
-        ]
-    },
-    {
-        path: '/products',
-        element: <ProductsLayout />,
-        children: [
             {
-                path: '/products/category/:category_slug',
-                element: <Products />
-            }
+                path: '/products',
+                element: <Products />,
+                loader: () => fetch(`${import.meta.env.VITE_APP_API_URL}/products`)
+            },
+            {
+                path: '/products/category/:slug',
+                element: <Products />,
+                loader: ({ params }) => fetch(`${import.meta.env.VITE_APP_API_URL}/products/category/${params.slug}`)
+            },
         ]
     },
+    // {
+    //     path: '/products',
+    //     element: <ProductsLayout />,
+    //     children: [
+    //         {
+    //             path: '/products/category/:category_slug',
+    //             element: <Products />
+    //         }
+    //     ]
+    // },
     {
         path: '/dashboard',
         element: <DashboardLayout />,
