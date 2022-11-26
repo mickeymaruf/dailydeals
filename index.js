@@ -32,7 +32,7 @@ async function run() {
             res.send(products);
         })
         // get products by category
-        app.get('/products/category/:category_slug', async (req, res) => {
+        app.get('/category/:category_slug', async (req, res) => {
             const category_slug = req.params.category_slug;
             const query = { category: category_slug };
             const products = await productsCollection.find(query).sort({ createdAt: -1 }).toArray();
@@ -77,6 +77,14 @@ async function run() {
             const user = req.body;
             const result = await usersCollection.insertOne(user);
             res.send(result);
+        })
+
+        // userIsExist
+        app.get('/userIsExist', async (req, res) => {
+            const query = { email: req.query.email };
+            const user = await usersCollection.findOne(query);
+            const isExist = user ? true : false;
+            res.send({ isExist });
         })
     } finally {
         // 
