@@ -86,6 +86,19 @@ async function run() {
             const result = await productsCollection.insertOne(product);
             res.send(result);
         })
+        // advertise product
+        app.put('/products/:id', verifyJWT, verifySeller, async (req, res) => {
+            const decodedEmail = req.decoded.email;
+            const id = req.params.id;
+            const query = { sellerEmail: decodedEmail, _id: ObjectId(id) }
+            const updateDoc = {
+                $set: {
+                    isAdvertised: true
+                },
+            }
+            const result = await productsCollection.updateOne(query, updateDoc);
+            res.send(result);
+        })
         app.delete('/products/:id', verifyJWT, verifySeller, async (req, res) => {
             const decodedEmail = req.decoded.email;
             const id = req.params.id;
@@ -103,6 +116,12 @@ async function run() {
             }
             const query = { sellerEmail: email };
             const products = await productsCollection.find(query).sort({ createdAt: -1 }).toArray();
+            res.send(products);
+        })
+
+        // get advertise products
+        app.get('/advertisedProducts', async (req, res) => {
+            const products = await productsCollection.find({ isAdvertised: true }).sort({ createdAt: -1 }).toArray();
             res.send(products);
         })
 
