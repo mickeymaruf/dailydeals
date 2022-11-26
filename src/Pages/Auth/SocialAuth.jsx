@@ -5,6 +5,7 @@ import { useAuth } from '../../contexts/AuthProvider';
 import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { saveUser } from '../../apis/users';
+import { useJWT } from '../../hooks/useJWT';
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -38,6 +39,8 @@ const SocialAuth = () => {
                                     console.log(err);
                                 })
                         }
+                        // issue jwt
+                        useJWT(user.email);
                     })
                 navigate("/");
             })

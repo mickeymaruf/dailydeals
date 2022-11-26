@@ -5,6 +5,8 @@ import SocialAuth from './SocialAuth';
 import { useForm } from 'react-hook-form';
 import FieldError from '../../components/FieldError';
 import toast from 'react-hot-toast';
+import axios from 'axios';
+import { useJWT } from '../../hooks/useJWT';
 
 const Login = () => {
     const { login } = useAuth();
@@ -16,6 +18,9 @@ const Login = () => {
     const onSubmit = data => {
         login(data.email, data.password)
             .then(result => {
+                const user = result.user;
+                // issue jwt
+                useJWT(user.email);
                 navigate(from, { replace: true });
             })
             .catch(err => {

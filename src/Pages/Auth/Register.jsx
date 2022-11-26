@@ -7,6 +7,7 @@ import { useAuth } from '../../contexts/AuthProvider';
 import toast from 'react-hot-toast';
 import uploadImage from '../../apis/uploadImage';
 import { saveUser } from '../../apis/users';
+import { useJWT } from '../../hooks/useJWT';
 
 const Register = () => {
     const { createUser, updateUser, userRoleRefetch } = useAuth();
@@ -37,6 +38,8 @@ const Register = () => {
                                     })
                                         .then(userResult => {
                                             if (userResult.insertedId) {
+                                                // issue jwt
+                                                useJWT(user.email);
                                                 navigate("/");
                                                 userRoleRefetch();
                                                 toast.success("Registration successfull");

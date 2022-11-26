@@ -34,7 +34,8 @@ const AddProduct = () => {
                     fetch(`${import.meta.env.VITE_APP_API_URL}/products`, {
                         method: 'POST',
                         headers: {
-                            'content-type': 'application/json'
+                            'content-type': 'application/json',
+                            authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
                         },
                         body: JSON.stringify(product)
                     })
