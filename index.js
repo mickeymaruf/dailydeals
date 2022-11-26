@@ -28,14 +28,14 @@ async function run() {
 
         // products
         app.get('/products', async (req, res) => {
-            const products = await productsCollection.find({}).toArray();
+            const products = await productsCollection.find({}).sort({ createdAt: -1 }).toArray();
             res.send(products);
         })
         // get products by category
         app.get('/products/category/:category_slug', async (req, res) => {
             const category_slug = req.params.category_slug;
             const query = { category: category_slug };
-            const products = await productsCollection.find(query).toArray();
+            const products = await productsCollection.find(query).sort({ createdAt: -1 }).toArray();
             res.send(products);
         })
         app.post('/products', async (req, res) => {
@@ -51,7 +51,7 @@ async function run() {
         app.get('/myproducts', async (req, res) => {
             const email = req.query.email;
             const query = { sellerEmail: email };
-            const products = await productsCollection.find(query).toArray();
+            const products = await productsCollection.find(query).sort({ createdAt: -1 }).toArray();
             res.send(products);
         })
 
