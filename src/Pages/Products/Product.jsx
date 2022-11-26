@@ -7,9 +7,9 @@ import { useAuth } from '../../contexts/AuthProvider';
 
 const Product = ({ product, setModalData }) => {
     const { user } = useAuth();
-    const { category, name, image, price, priceOriginal, contact, location, used, createdAt, sellerName, sellerEmail } = product;
+    const { category, name, image, price, priceOriginal, contact, location, used, createdAt, sellerName, sellerEmail, isAdvertised } = product;
     return (
-        <div className="flex bg-white border border-warning">
+        <div className={`flex ${isAdvertised ? 'bg-pink-50' : 'bg-white'} border border-warning rounded relative`}>
             <figure className='p-3'>
                 <img className='w-72 h-full object-cover' src={image} alt={name} />
             </figure>
@@ -25,7 +25,7 @@ const Product = ({ product, setModalData }) => {
                                 name
                         }
                     </h2>
-                    <div className="badge badge-primary badge-outline">Seller</div>
+                    <div className="badge badge-primary badge-outline">{category}</div>
                     <div className='text-sm text-accent mt-1'>
                         {sellerName}
                         <div className="tooltip tooltip-right tooltip-info text-white" data-tip="Verified">
@@ -47,6 +47,10 @@ const Product = ({ product, setModalData }) => {
                         <label onClick={() => setModalData(product)} htmlFor="bookingModal" className="btn btn-primary">Book Now</label>
                 }
             </div>
+            {
+                isAdvertised &&
+                <p className='absolute top-0 right-0 bg-red-200 font-bold rounded-tr px-2'>AD</p>
+            }
         </div>
     );
 };

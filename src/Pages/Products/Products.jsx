@@ -37,7 +37,7 @@ const Products = () => {
                     }
                 </div>
             </div>
-
+            
             {
                 modalData &&
                 <BookingModal product={modalData} setModalData={setModalData} />

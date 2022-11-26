@@ -10,6 +10,7 @@ const MyProducts = () => {
     const { user, logOut } = useAuth();
     const { data: products = [], refetch } = useQuery({
         queryKey: ['products', user?.email],
+        refetchOnWindowFocus: false,
         queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/myproducts?email=${user?.email}`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
@@ -25,6 +26,7 @@ const MyProducts = () => {
             })
     })
 
+    // handle delete product
     const handleDeleteProduct = id => {
         axios.delete(`${import.meta.env.VITE_APP_API_URL}/products/${id}`, {
             headers: {
@@ -34,7 +36,24 @@ const MyProducts = () => {
             .then(data => {
                 if (data.data.deletedCount > 0) {
                     refetch();
-                    toast.success("Product deleted!")
+                    toast.success("Product deleted!");
+                }
+            })
+    }
+
+    // advertise product
+    const advertiseProduct = (id, name) => {
+        fetch(`${import.meta.env.VITE_APP_API_URL}/products/${id}`, {
+            method: 'PUT',
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.modifiedCount) {
+                    refetch();
+                    toast.success(`${name} advertised successfully`);
                 }
             })
     }
@@ -85,7 +104,12 @@ const MyProducts = () => {
                                     <p className='text-xs'>{moment(product.createdAt).fromNow()}</p>
                                 </td>
                                 <th>
-                                    <button className="btn btn-warning btn-xs mr-2">Advertise</button>
+                                    {
+                                        product.isAdvertised ?
+                                            <button className="btn btn-warning btn-xs mr-2" disabled>Advertise</button>
+                                            :
+                                            <button onClick={() => advertiseProduct(product._id, product.name)} className="btn btn-warning btn-xs mr-2">Advertise</button>
+                                    }
                                     <button onClick={() => handleDeleteProduct(product._id)} className="btn btn-error btn-xs">Delete</button>
                                 </th>
                             </tr>)
