@@ -4,6 +4,7 @@ const cors = require('cors')
 require('dotenv').config()
 const moment = require('moment')
 const jwt = require('jsonwebtoken')
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 5000
 
 // middlewares
@@ -26,7 +27,6 @@ const verifyJWT = (req, res, next) => {
 
 }
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.ld8a5ol.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 async function run() {
@@ -86,9 +86,21 @@ async function run() {
             const result = await productsCollection.insertOne(product);
             res.send(result);
         })
+        app.delete('/products/:id', verifyJWT, verifySeller, async (req, res) => {
+            const decodedEmail = req.decoded.email;
+            const id = req.params.id;
+            const query = { sellerEmail: decodedEmail, _id: ObjectId(id) }
+            const result = await productsCollection.deleteOne(query);
+            res.send(result);
+        })
         // get products by seller email
-        app.get('/myproducts', async (req, res) => {
+        app.get('/myproducts', verifyJWT, verifySeller, async (req, res) => {
+            const decodedEmail = req.decoded.email;
             const email = req.query.email;
+            // checking if the queryEmail and the decodedEmail is eq or not
+            if (decodedEmail !== email) {
+                return res.status(403).send({ status: 'forbidden access' });
+            }
             const query = { sellerEmail: email };
             const products = await productsCollection.find(query).sort({ createdAt: -1 }).toArray();
             res.send(products);
