@@ -23,7 +23,7 @@ const Products = () => {
                                 <li><Link to={`/products`}>All</Link></li>
                                 {
                                     categories?.map(category => <li key={category._id}>
-                                        <Link to={`/products/category/${category.slug}`}>{category.name}</Link>
+                                        <Link to={`/category/${category.slug}`}>{category.name}</Link>
                                     </li>)
                                 }
                             </>

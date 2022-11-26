@@ -4,15 +4,41 @@ import { GoogleAuthProvider } from "firebase/auth";
 import { useAuth } from '../../contexts/AuthProvider';
 import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { saveUser } from '../../apis/users';
 
 const googleProvider = new GoogleAuthProvider();
 
 const SocialAuth = () => {
-    const { providerLogin } = useAuth();
+    const { providerLogin, userRoleRefetch } = useAuth();
     const navigate = useNavigate();
     const handleProviderLogin = () => {
         providerLogin(googleProvider)
             .then(result => {
+                const user = result.user;
+                // check either the user is exist or not in the db
+                fetch(`${import.meta.env.VITE_APP_API_URL}/userIsExist?email=${user.email}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (!data.isExist) {
+                            // save user to the db if the user is not exist
+                            saveUser({
+                                name: user.displayName,
+                                email: user.email,
+                                role: "buyer"
+                            })
+                                .then(userResult => {
+                                    if (userResult.insertedId) {
+                                        navigate("/");
+                                        userRoleRefetch();
+                                        toast.success("Registration successfull");
+                                    }
+                                })
+                                .catch(err => {
+                                    toast.error(err.message)
+                                    console.log(err);
+                                })
+                        }
+                    })
                 navigate("/");
             })
             .catch(err => {

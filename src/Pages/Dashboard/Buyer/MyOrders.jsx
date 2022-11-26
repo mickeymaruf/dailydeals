@@ -11,7 +11,7 @@ const MyOrders = () => {
         queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/myorders?email=${user?.email}`)
             .then(res => res.json())
     })
-    console.log(orders);
+    
     return (
         <div>
             <Heading>My Orders</Heading>

@@ -37,7 +37,7 @@ const Category = () => {
                         :
                         categories?.map(category => <SwiperSlide key={category._id}>
                             <div className="text-center">
-                                <Link to={`/products/category/${category.slug}`}>
+                                <Link to={`/category/${category.slug}`}>
                                     <img className='mb-2 shadow-md prevent-select' src={category.image} alt="" />
                                 </Link>
                                 <h3 className='text-xl font-medium'>{category.name}</h3>
