@@ -3,11 +3,28 @@ const app = express()
 const cors = require('cors')
 require('dotenv').config()
 const moment = require('moment')
+const jwt = require('jsonwebtoken')
 const port = process.env.PORT || 5000
 
 // middlewares
 app.use(cors())
 app.use(express.json())
+
+const verifyJWT = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+        return res.status(401).send({ status: 'unauthorized access' });
+    }
+    const token = authHeader.split(" ")[1];
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(403).send({ status: 'forbidden access' });
+        }
+        req.decoded = decoded;
+        next();
+    });
+
+}
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.ld8a5ol.mongodb.net/?retryWrites=true&w=majority`;
@@ -19,6 +36,28 @@ async function run() {
         const productsCollection = db.collection("products");
         const bookingsCollection = db.collection("bookings");
         const usersCollection = db.collection("users");
+
+        // middlewares
+        const verifySeller = async (req, res, next) => {
+            const email = req.decoded.email;
+            // checking user is exist and role is seller or not
+            const user = await usersCollection.findOne({ email, role: "seller" });
+            if (!user) {
+                return res.status(403).send({ status: 'forbidden access' });
+            }
+            next();
+        }
+
+        // jwt
+        app.get('/jwt', async (req, res) => {
+            const email = req.query.email;
+            const user = await usersCollection.findOne({ email });
+            if (!user) {
+                return res.status(403).send({ accessToken: '' });
+            }
+            const token = jwt.sign({ email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10h' });
+            res.send({ 'accessToken': token })
+        })
 
         // categories
         app.get('/categories', async (req, res) => {
@@ -38,7 +77,7 @@ async function run() {
             const products = await productsCollection.find(query).sort({ createdAt: -1 }).toArray();
             res.send(products);
         })
-        app.post('/products', async (req, res) => {
+        app.post('/products', verifyJWT, verifySeller, async (req, res) => {
             const product = req.body;
             // adding date & time
             const createdAt = moment().format();
