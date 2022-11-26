@@ -9,12 +9,12 @@ import uploadImage from '../../apis/uploadImage';
 import { saveUser } from '../../apis/users';
 
 const Register = () => {
-    const { createUser, updateUser } = useAuth();
+    const { createUser, updateUser, userRoleRefetch } = useAuth();
     const navigate = useNavigate();
 
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = data => {
-        const { name, email, password, picture } = data;
+        const { name, email, password, picture, role } = data;
 
         // upload image
         const formData = new FormData();
@@ -33,11 +33,12 @@ const Register = () => {
                                     saveUser({
                                         name: user.displayName,
                                         email: user.email,
-                                        role: "buyer"
+                                        role: role
                                     })
                                         .then(userResult => {
                                             if (userResult.insertedId) {
                                                 navigate("/");
+                                                userRoleRefetch();
                                                 toast.success("Registration successfull");
                                             }
                                         })
@@ -98,21 +99,16 @@ const Register = () => {
                             errors.password && <FieldError>{errors.password?.message}</FieldError>
                         }
                     </div>
-                    <div className='flex gap-3'>
-                        <div className="form-control">
-                            <label className="label cursor-pointer">
-                                <input {...register("role")} type="radio" name="radio-role" value="buyer" checked />
-                                <span className="label-text ml-2">Buyer</span>
-                            </label>
-                        </div>
-                        <div className="form-control">
-                            <label className="label cursor-pointer">
-                                <input {...register("role")} type="radio" name="radio-role" value="seller" />
-                                <span className="label-text ml-2">Seller</span>
-                            </label>
-                        </div>
+                    <div className="form-control">
+                        <label className="label">
+                            <span className="label-text">Your role</span>
+                        </label>
+                        <select {...register("role")} className="select select-bordered w-full font-normal">
+                            <option value="buyer" selected>Buyer</option>
+                            <option value="seller">Seller</option>
+                        </select>
                     </div>
-                    <div className="form-control mt-4">
+                    <div className="form-control mt-5">
                         <button className="btn btn-primary">Register</button>
                     </div>
                 </form>

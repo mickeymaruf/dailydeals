@@ -19,13 +19,21 @@ const DashboardLayout = () => {
                     <div className="drawer-side">
                         <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
                         <ul className="menu menu-compact gap-2 p-5 text-accent w-64 bg-white">
-                            <div className='text-sm text-accent mb-1 border-b pb-2'>
+                            {
+                                userRole &&
+                                <h5 className='border-b pb-2 mb-1 text-xl text-info font-medium'>
+                                    <span className='capitalize'>{userRole}</span>'s account
+                                </h5>
+                            }
+                            <div className='text-sm text-accent flex items-center gap-3'>
                                 <div className="avatar online">
                                     <div className="w-12 rounded-full">
                                         <img src={user?.photoURL} />
                                     </div>
                                 </div>
-                                <p>{user?.displayName}</p>
+                                <div>
+                                    <p>{user?.displayName}</p>
+                                </div>
                             </div>
                             <p className='mb-2 text-black font-medium'>Dashboard</p>
                             <div className='bg-base-100 text-black p-1'>

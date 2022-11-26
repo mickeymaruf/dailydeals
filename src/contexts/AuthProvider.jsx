@@ -10,7 +10,7 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const [userRole, userRoleIsLoading] = useUserRole(user?.email);
+    const [userRole, userRoleIsLoading, userRoleRefetch] = useUserRole(user?.email);
 
     const login = (email, password) => {
         setLoading(true);
@@ -41,7 +41,8 @@ const AuthProvider = ({ children }) => {
         logOut,
         createUser,
         providerLogin,
-        updateUser
+        updateUser,
+        userRoleRefetch
     }
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, currentUser => {
