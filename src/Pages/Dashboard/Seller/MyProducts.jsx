@@ -3,14 +3,41 @@ import React from 'react';
 import Heading from '../../../components/Heading';
 import { useAuth } from '../../../contexts/AuthProvider';
 import moment from 'moment';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const MyProducts = () => {
-    const { user } = useAuth();
-    const { data: products = [] } = useQuery({
+    const { user, logOut } = useAuth();
+    const { data: products = [], refetch } = useQuery({
         queryKey: ['products', user?.email],
-        queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/myproducts?email=${user?.email}`)
-            .then(res => res.json())
+        queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/myproducts?email=${user?.email}`, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
+            }
+        })
+            .then(res => {
+                if (res.status === 401 || res.status === 403) {
+                    logOut()
+                    localStorage.removeItem('DAILY_DEALS_ACCESS_TOKEN')
+                    return []
+                }
+                return res.json()
+            })
     })
+
+    const handleDeleteProduct = id => {
+        axios.delete(`${import.meta.env.VITE_APP_API_URL}/products/${id}`, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
+            }
+        })
+            .then(data => {
+                if (data.data.deletedCount > 0) {
+                    refetch();
+                    toast.success("Product deleted!")
+                }
+            })
+    }
 
     return (
         <div>
@@ -59,7 +86,7 @@ const MyProducts = () => {
                                 </td>
                                 <th>
                                     <button className="btn btn-warning btn-xs mr-2">Advertise</button>
-                                    <button className="btn btn-error btn-xs">Delete</button>
+                                    <button onClick={() => handleDeleteProduct(product._id)} className="btn btn-error btn-xs">Delete</button>
                                 </th>
                             </tr>)
                         }
