@@ -20,11 +20,13 @@ const SocialAuth = () => {
                 fetch(`${import.meta.env.VITE_APP_API_URL}/userIsExist?email=${user.email}`)
                     .then(res => res.json())
                     .then(data => {
+                        console.log(user.photoURL);
                         if (!data.isExist) {
                             // save user to the db if the user is not exist
                             saveUser({
                                 name: user.displayName,
                                 email: user.email,
+                                image: user.photoURL,
                                 role: "buyer"
                             })
                                 .then(userResult => {

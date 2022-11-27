@@ -15,12 +15,16 @@ const Advertise = () => {
             .then(data => data.data)
     })
 
+    if (!products.length) {
+        return
+    }
+
     if (isLoading) {
         return <Spinner />
     }
 
     return (
-        <div className='pt-5'>
+        <div className='pt-5 mb-16'>
             <Heading>Advertisements</Heading>
             <div className='grid grid-cols-2 gap-10'>
                 {
@@ -39,17 +43,17 @@ const AdvertisedProduct = ({ product }) => {
                 <img className='w-full h-40 object-cover object-center rounded' src={image} alt="Movie" />
             </figure>
             <div className="p-2 pl-1">
-                <h2 className="card-title">
+                <h2 className="card-title text-lg">
                     {
-                        name.length > 27 ?
+                        name.length > 18 ?
                             <div className="tooltip tooltip-bottom" data-tip={name}>
-                                {name.slice(0, 27) + '...'}
+                                {name.slice(0, 18) + '...'}
                             </div>
                             :
                             name
                     }
                 </h2>
-                <div className="badge badge-primary badge-outline">{category}</div>
+                <div className="badge badge-primary badge-outline badge-sm pb-1">{category}</div>
                 <div className='text-sm text-accent mt-1'>
                     {sellerName}
                     <div className="tooltip tooltip-right tooltip-info text-white" data-tip="Verified">

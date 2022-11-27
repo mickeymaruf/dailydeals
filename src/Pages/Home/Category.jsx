@@ -8,7 +8,7 @@ import { CategoryContext } from '../../contexts/CategoryProvider';
 const Category = () => {
     const { categories, isLoading } = useContext(CategoryContext);
     return (
-        <div className='py-20'>
+        <div className='pb-20 pt-5'>
             <Heading>Find Laptop By Categories</Heading>
             <Swiper
                 spaceBetween={25}

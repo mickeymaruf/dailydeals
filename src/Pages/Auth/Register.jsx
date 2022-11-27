@@ -34,6 +34,7 @@ const Register = () => {
                                     saveUser({
                                         name: user.displayName,
                                         email: user.email,
+                                        image: user.photoURL,
                                         role: role
                                     })
                                         .then(userResult => {

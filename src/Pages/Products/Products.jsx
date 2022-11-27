@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { Link, useLoaderData } from 'react-router-dom';
+import { Link, useLoaderData, useNavigation } from 'react-router-dom';
+import Spinner from '../../components/Spinner';
 import { CategoryContext } from '../../contexts/CategoryProvider';
 import BookingModal from './BookingModal';
 import Product from './Product';
@@ -8,6 +9,7 @@ const Products = () => {
     const { categories, isLoading } = useContext(CategoryContext);
     const products = useLoaderData();
     const [modalData, setModalData] = useState(null);
+    const navigation = useNavigation();
 
     return (
         <div className="max-w-screen-lg mx-auto bg-white my-8 border rounded-sm grid grid-cols-12">
@@ -33,11 +35,12 @@ const Products = () => {
             <div className='col-span-9 p-5'>
                 <div className='grid grid-cols-1 gap-5'>
                     {
-                        products.map(product => <Product key={product._id} product={product} setModalData={setModalData} />)
+                        navigation.state === "loading" ? <Spinner /> :
+                            products.map(product => <Product key={product._id} product={product} setModalData={setModalData} />)
                     }
                 </div>
             </div>
-            
+
             {
                 modalData &&
                 <BookingModal product={modalData} setModalData={setModalData} />
