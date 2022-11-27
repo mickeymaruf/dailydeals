@@ -8,9 +8,14 @@ const MyOrders = () => {
     const { user } = useAuth()
     const { data: orders = [] } = useQuery({
         queryKey: ['orders', user?.email],
-        queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/myorders?email=${user?.email}`)
+        queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/myorders?email=${user?.email}`, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
+            }
+        })
             .then(res => res.json())
     })
+
     
     return (
         <div>
@@ -20,9 +25,8 @@ const MyOrders = () => {
                     <thead>
                         <tr>
                             <th>Product</th>
-                            <th>Status</th>
-                            <th>Posted At</th>
-                            <th></th>
+                            <th>Your Contact</th>
+                            <th>Meeting location</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -37,30 +41,26 @@ const MyOrders = () => {
                                         </div>
                                         <div>
                                             <div className="font-bold">
-                                                {/* {
-                                                    product.name.length > 16 ?
-                                                        <div className="tooltip tooltip-right" data-tip={product.name}>
-                                                            {product.name.slice(0, 16) + '...'}
+                                                {
+                                                    product.productName.length > 25 ?
+                                                        <div className="tooltip tooltip-right" data-tip={product.productName}>
+                                                            {product.productName.slice(0, 25) + '...'}
                                                         </div>
                                                         :
-                                                        product.name
-                                                } */}
+                                                        product.productName
+                                                }
                                             </div>
-                                            <div className="text-sm opacity-50">Price: {product.price} BDT</div>
+                                            <p className='text-sm opacity-50'>Price: {product.price} BDT</p>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
-                                    <p className='text-sm'>{product.location}</p>
-                                    <span className="badge badge-ghost badge-sm">Available</span>
+                                    {product.buyerContact} <br />
+                                    <p className='badge badge-ghost badge-sm'>{product.buyerEmail}</p>
                                 </td>
                                 <td>
-                                    <p className='text-xs'>{moment(product.createdAt).fromNow()}</p>
+                                    <div>{product.meetingLocation}</div>
                                 </td>
-                                <th>
-                                    <button className="btn btn-warning btn-xs mr-2">Advertise</button>
-                                    <button className="btn btn-error btn-xs">Delete</button>
-                                </th>
                             </tr>)
                         }
                     </tbody>

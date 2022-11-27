@@ -6,7 +6,11 @@ import Heading from '../../../components/Heading';
 const AllBuyers = () => {
     const { data: buyers = [], refetch } = useQuery({
         queryKey: ['buyers'],
-        queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/users?role=buyer`)
+        queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/users?role=buyer`, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
+            }
+        })
             .then(res => res.json())
     })
 

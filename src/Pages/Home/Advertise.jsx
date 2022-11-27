@@ -1,17 +1,22 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ImLocation } from 'react-icons/im';
 import { MdVerified } from 'react-icons/md';
 import Heading from '../../components/Heading';
 import Spinner from '../../components/Spinner';
 import moment from 'moment';
+import { useIsVerified } from '../../hooks/useIsVerified';
 
 const Advertise = () => {
     const { data: products = [], isLoading } = useQuery({
         queryKey: ['products'],
         refetchOnWindowFocus: false,
-        queryFn: () => axios.get(`${import.meta.env.VITE_APP_API_URL}/advertisedProducts`)
+        queryFn: () => axios.get(`${import.meta.env.VITE_APP_API_URL}/advertisedProducts`, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
+            }
+        })
             .then(data => data.data)
     })
 
@@ -36,7 +41,14 @@ const Advertise = () => {
 };
 
 const AdvertisedProduct = ({ product }) => {
+    const [sellerIsVerified, setSellerIsVerified] = useState(null);
     const { category, name, image, price, priceOriginal, contact, location, used, createdAt, sellerName, sellerEmail } = product;
+
+    useEffect(() => {
+        useIsVerified(sellerEmail)
+            .then(data => setSellerIsVerified(data));
+    }, [sellerEmail])
+
     return (
         <div className="flex bg-pink-50 border border-warning rounded relative">
             <figure className='p-2 w-48'>
@@ -56,9 +68,12 @@ const AdvertisedProduct = ({ product }) => {
                 <div className="badge badge-primary badge-outline badge-sm pb-1">{category}</div>
                 <div className='text-sm text-accent mt-1'>
                     {sellerName}
-                    <div className="tooltip tooltip-right tooltip-info text-white" data-tip="Verified">
-                        <MdVerified className='inline text-info w-4 h-4 ml-1' />
-                    </div>
+                    {
+                        sellerIsVerified &&
+                        <div className="tooltip tooltip-right tooltip-info text-white" data-tip="Verified">
+                            <MdVerified className='inline text-info w-4 h-4 ml-1' />
+                        </div>
+                    }
                 </div>
                 <p className='text-xs text-accent mt-1'>
                     <ImLocation className='inline w-4 h-4' />{location}

@@ -6,7 +6,11 @@ import Heading from '../../../components/Heading';
 const AllSellers = () => {
     const { data: sellers = [], refetch } = useQuery({
         queryKey: ['sellers'],
-        queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/users?role=seller`)
+        queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/users?role=seller`, {
+            headers: {
+                authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
+            }
+        })
             .then(res => res.json())
     })
 
@@ -28,6 +32,22 @@ const AllSellers = () => {
                     }
                 })
         }
+    }
+
+    const handleVerifyUser = (email, name) => {
+        fetch(`${import.meta.env.VITE_APP_API_URL}/verifyUser?email=${email}`, {
+            headers: {
+                "content-type": "application/json",
+                authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.modifiedCount > 0) {
+                    refetch();
+                    toast.success(`${name.split(" ")[0]} is verified`)
+                }
+            })
     }
 
     return (
@@ -64,6 +84,12 @@ const AllSellers = () => {
                                 <td>
                                     <span className="badge badge-warning badge-sm">{user.role}</span></td>
                                 <th>
+                                    {
+                                        user.isVerified ?
+                                        <button className="btn btn-info btn-xs mr-2 text-white" disabled>verify</button>
+                                        :
+                                        <button onClick={() => handleVerifyUser(user.email, user.name)} className="btn btn-info btn-xs mr-2 text-white">verify</button>
+                                    }
                                     <button onClick={() => handleDeleteUser(user._id, user.name)} className="btn btn-error btn-xs">delete</button>
                                 </th>
                             </tr>)

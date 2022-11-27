@@ -6,12 +6,13 @@ import { useAuth } from '../../contexts/AuthProvider';
 
 const BookingModal = ({ product, setModalData }) => {
     const { user } = useAuth();
-    const { _id, name, price } = product;
+    const { _id, name, price, image } = product;
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = data => {
         const bookingProduct = {
             productName: name,
             price,
+            image,
             buyerName: user.name,
             buyerEmail: user.email,
             buyerContact: data.contact,

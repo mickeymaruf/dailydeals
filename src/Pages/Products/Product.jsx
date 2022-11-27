@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ImLocation } from 'react-icons/im';
 import { MdVerified } from 'react-icons/md';
 import { RiPhoneFill } from 'react-icons/ri';
@@ -6,10 +6,17 @@ import moment from 'moment';
 import { useAuth } from '../../contexts/AuthProvider';
 import { MdReportGmailerrorred } from 'react-icons/md';
 import toast from 'react-hot-toast';
+import { useIsVerified } from '../../hooks/useIsVerified';
 
 const Product = ({ product, setModalData }) => {
-    const { user } = useAuth();
-    const { _id, category, name, image, price, priceOriginal, contact, location, used, createdAt, sellerName, sellerEmail, flag } = product;
+    const [sellerIsVerified, setSellerIsVerified] = useState(null);
+    const { user, userRole } = useAuth();
+    const { _id, category, name, image, price, priceOriginal, contact, location, used, createdAt, sellerName, sellerEmail } = product;
+
+    useEffect(() => {
+        useIsVerified(sellerEmail)
+            .then(data => setSellerIsVerified(data));
+    }, [sellerEmail])
 
     // report to admin
     const reportToAdmin = () => {
@@ -52,9 +59,12 @@ const Product = ({ product, setModalData }) => {
                     <div className="badge badge-primary badge-outline">{category}</div>
                     <div className='text-sm text-accent mt-1'>
                         {sellerName}
-                        <div className="tooltip tooltip-right tooltip-info text-white" data-tip="Verified">
-                            <MdVerified className='inline text-info w-4 h-4 ml-1' />
-                        </div>
+                        {
+                            sellerIsVerified &&
+                            <div className="tooltip tooltip-right tooltip-info text-white" data-tip="Verified">
+                                <MdVerified className='inline text-info w-4 h-4 ml-1' />
+                            </div>
+                        }
                     </div>
                     <p className='text-sm text-accent mt-1'>
                         <ImLocation className='inline w-4 h-4' />{location} - <RiPhoneFill className='inline w-4 h-4' />{contact}
@@ -72,14 +82,9 @@ const Product = ({ product, setModalData }) => {
                 }
             </div>
             <div className='absolute top-0 right-0'>
-                {
-                    flag?.flag && flag?.personWhoReported === user?.email ?
-                        <MdReportGmailerrorred className='h-7 w-7 m-px text-red-300' />
-                        :
-                        <button onClick={reportToAdmin} className='btn p-0 min-h-fit h-fit bg-inherit border-0 hover:bg-inherit'>
-                            <MdReportGmailerrorred className='h-7 w-7 m-px text-red-500' />
-                        </button>
-                }
+                <button onClick={reportToAdmin} className='btn p-0 min-h-fit h-fit bg-inherit border-0 hover:bg-inherit'>
+                    <MdReportGmailerrorred className='h-7 w-7 m-px text-red-500' />
+                </button>
             </div>
         </div>
     );

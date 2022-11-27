@@ -14,24 +14,21 @@ const ReportedItems = () => {
             .then(res => res.json())
     })
 
-    const handleDeleteProduct = (id, name) => {
-        const confirmDelete = confirm(`Are your sure want to delete ${name}`);
-        if (confirmDelete) {
-            fetch(`${import.meta.env.VITE_APP_API_URL}/reportedProducts/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    "content-type": "application/json",
-                    authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
+    const handleDeleteReport = id => {
+        fetch(`${import.meta.env.VITE_APP_API_URL}/reportedProducts/${id}`, {
+            method: 'DELETE',
+            headers: {
+                "content-type": "application/json",
+                authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.deletedCount > 0) {
+                    refetch();
+                    toast.success(`Deleted successfully!`)
                 }
             })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.deletedCount > 0) {
-                        refetch();
-                        toast.success(`${name} deleted`)
-                    }
-                })
-        }
     }
 
     return (
@@ -48,33 +45,33 @@ const ReportedItems = () => {
                     </thead>
                     <tbody>
                         {
-                            reportedProducts.map(product => <tr key={product._id}>
+                            reportedProducts.map(item => <tr key={item._id}>
                                 <td>
                                     <div className="flex items-center space-x-3">
                                         <div className="avatar">
                                             <div className="mask mask-squircle w-12 h-12">
-                                                <img src={product.image} alt="Avatar Tailwind CSS Component" />
+                                                <img src={item.image} alt="Avatar Tailwind CSS Component" />
                                             </div>
                                         </div>
                                         <div>
                                             <div className="font-bold">
                                                 {
-                                                    product.name.length > 25 ?
-                                                        <div className="tooltip tooltip-bottom" data-tip={product.name}>
-                                                            {product.name.slice(0, 25) + '...'}
+                                                    item.name.length > 25 ?
+                                                        <div className="tooltip tooltip-bottom" data-tip={item.name}>
+                                                            {item.name.slice(0, 25) + '...'}
                                                         </div>
                                                         :
-                                                        product.name
+                                                        item.name
                                                 }
                                             </div>
                                         </div>
                                     </div>
                                 </td>
                                 <td>
-                                    <span className="badge badge-ghost">{product.personWhoReported}</span>
+                                    <span className="badge badge-ghost">{item.personWhoReported}</span>
                                 </td>
                                 <th>
-                                    <button onClick={() => handleDeleteProduct(product.productId, product.name)} className="btn btn-error btn-xs">delete product</button>
+                                    <button onClick={() => handleDeleteReport(item._id)} className="btn btn-error btn-xs">delete product</button>
                                 </th>
                             </tr>)
                         }
