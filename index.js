@@ -121,13 +121,13 @@ async function run() {
         })
 
         // get advertise products
-        app.get('/advertisedProducts', async (req, res) => {
+        app.get('/advertisedProducts', verifyJWT, verifySeller, async (req, res) => {
             const products = await productsCollection.find({ isAdvertised: true }).sort({ createdAt: -1 }).toArray();
             res.send(products);
         })
 
         // bookings
-        app.get('/myorders', async (req, res) => {
+        app.get('/myorders', verifyJWT, async (req, res) => {
             const query = { buyerEmail: req.query.email }
             const orders = await bookingsCollection.find(query).toArray();
             res.send(orders);
@@ -149,6 +149,22 @@ async function run() {
             const result = await usersCollection.insertOne(user);
             res.send(result);
         })
+        // verify user
+        app.get('/verifyUser', verifyJWT, async (req, res) => {
+            const email = req.query.email;
+            const updateDoc = {
+                $set: {
+                    isVerified: true
+                }
+            }
+            const result = await usersCollection.updateOne({ email, role: "seller" }, updateDoc);
+            res.send(result);
+        })
+        app.get('/isVerified', async (req, res) => {
+            const email = req.query.email;
+            const user = await usersCollection.findOne({ email });
+            res.send(user?.isVerified || false);
+        })
 
         // userIsExist
         app.get('/userIsExist', async (req, res) => {
@@ -159,7 +175,7 @@ async function run() {
         })
 
         // users by role
-        app.get('/users', async (req, res) => {
+        app.get('/users', verifyJWT, async (req, res) => {
             const role = req.query.role;
             const users = await usersCollection.find({ role }).sort({ createdAt: -1 }).toArray();
             res.send(users);
@@ -190,12 +206,9 @@ async function run() {
         })
         app.delete('/reportedProducts/:id', verifyJWT, async (req, res) => {
             const id = req.params.id;
-            const product = await productsCollection.deleteOne({ _id: ObjectId(id) })
-            if (product.deletedCount > 0) {
-                const result = await reportedProductsCollection.deleteOne({ productId: id });
-                return res.send(result);
-            }
-            res.send({ deletedCount: 0 });
+            console.log(id);
+            const result = await reportedProductsCollection.deleteOne({ _id: ObjectId(id) });
+            res.send(result);
         })
     } finally {
         // 
