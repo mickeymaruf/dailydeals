@@ -36,6 +36,7 @@ async function run() {
         const productsCollection = db.collection("products");
         const bookingsCollection = db.collection("bookings");
         const usersCollection = db.collection("users");
+        const reportedProductsCollection = db.collection("reportedProducts");
 
         // middlewares
         const verifySeller = async (req, res, next) => {
@@ -168,6 +169,33 @@ async function run() {
             const query = { _id: ObjectId(req.params.id) };
             const result = await usersCollection.deleteOne(query);
             res.send(result);
+        })
+
+        // report to admin
+        app.post('/products/report/:id', verifyJWT, async (req, res) => {
+            const personWhoReported = req.query.email;
+            const productId = req.params.id;
+            const product = req.body;
+            const isExist = await reportedProductsCollection.findOne({ productId });
+            if (!isExist) {
+                const result = await reportedProductsCollection.insertOne({ productId, personWhoReported, ...product });
+                return res.send(result);
+            }
+            return res.send({ insertedId: null });
+        })
+        // reported items
+        app.get('/reportedProducts', verifyJWT, async (req, res) => {
+            const reportedProducts = await reportedProductsCollection.find({}).toArray();
+            res.send(reportedProducts);
+        })
+        app.delete('/reportedProducts/:id', verifyJWT, async (req, res) => {
+            const id = req.params.id;
+            const product = await productsCollection.deleteOne({ _id: ObjectId(id) })
+            if (product.deletedCount > 0) {
+                const result = await reportedProductsCollection.deleteOne({ productId: id });
+                return res.send(result);
+            }
+            res.send({ deletedCount: 0 });
         })
     } finally {
         // 
