@@ -4,12 +4,36 @@ import { MdVerified } from 'react-icons/md';
 import { RiPhoneFill } from 'react-icons/ri';
 import moment from 'moment';
 import { useAuth } from '../../contexts/AuthProvider';
+import { MdReportGmailerrorred } from 'react-icons/md';
+import toast from 'react-hot-toast';
 
 const Product = ({ product, setModalData }) => {
     const { user } = useAuth();
-    const { category, name, image, price, priceOriginal, contact, location, used, createdAt, sellerName, sellerEmail, isAdvertised } = product;
+    const { _id, category, name, image, price, priceOriginal, contact, location, used, createdAt, sellerName, sellerEmail, flag } = product;
+
+    // report to admin
+    const reportToAdmin = () => {
+        fetch(`${import.meta.env.VITE_APP_API_URL}/products/report/${_id}?email=${user.email}`, {
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+                authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
+            },
+            body: JSON.stringify({ name, image })
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                if (data.insertedId) {
+                    toast.success('Reported successfully');
+                } else {
+                    toast.error('Already reported');
+                }
+            })
+    }
+
     return (
-        <div className={`flex ${isAdvertised ? 'bg-pink-50' : 'bg-white'} border border-warning rounded relative`}>
+        <div className='flex bg-white border border-warning rounded relative'>
             <figure className='p-3'>
                 <img className='w-72 h-full object-cover' src={image} alt={name} />
             </figure>
@@ -47,10 +71,16 @@ const Product = ({ product, setModalData }) => {
                         <label onClick={() => setModalData(product)} htmlFor="bookingModal" className="btn btn-primary">Book Now</label>
                 }
             </div>
-            {
-                isAdvertised &&
-                <p className='absolute top-0 right-0 bg-red-200 font-bold rounded-tr px-2'>AD</p>
-            }
+            <div className='absolute top-0 right-0'>
+                {
+                    flag?.flag && flag?.personWhoReported === user?.email ?
+                        <MdReportGmailerrorred className='h-7 w-7 m-px text-red-300' />
+                        :
+                        <button onClick={reportToAdmin} className='btn p-0 min-h-fit h-fit bg-inherit border-0 hover:bg-inherit'>
+                            <MdReportGmailerrorred className='h-7 w-7 m-px text-red-500' />
+                        </button>
+                }
+            </div>
         </div>
     );
 };
