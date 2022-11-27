@@ -8,7 +8,7 @@ import { EffectCoverflow, Navigation, Pagination } from 'swiper';
 const Home = () => {
     return (
         <div className='max-w-screen-lg mx-auto'>
-            <div className=' bg-white prevent-select'>
+            <div className='bg-white prevent-select'>
                 <Swiper
                     effect={"coverflow"}
                     grabCursor={true}

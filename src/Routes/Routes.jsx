@@ -16,6 +16,7 @@ import RequireAuth from "./RequireAuth";
 import ReportedItems from "../Pages/Dashboard/Admin/ReportedItems";
 import AdminRoute from "./AdminRoute";
 import SellerRoute from "./SellerRoute";
+import ErrorPage from "../Pages/Shared/ErrorPage";
 
 const router = createBrowserRouter([
     {
@@ -48,7 +49,8 @@ const router = createBrowserRouter([
                 element: <RequireAuth><Products /></RequireAuth>,
                 loader: ({ params }) => fetch(`${import.meta.env.VITE_APP_API_URL}/category/${params.slug}`)
             },
-        ]
+        ],
+        errorElement: <ErrorPage />
     },
     {
         path: '/dashboard',
@@ -82,7 +84,8 @@ const router = createBrowserRouter([
                 path: '/dashboard/reporteditems',
                 element: <AdminRoute><ReportedItems /></AdminRoute>
             },
-        ]
+        ],
+        errorElement: <ErrorPage />
     }
 ])
 
