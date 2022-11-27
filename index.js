@@ -156,6 +156,19 @@ async function run() {
             const isExist = user ? true : false;
             res.send({ isExist });
         })
+
+        // users by role
+        app.get('/users', async (req, res) => {
+            const role = req.query.role;
+            const users = await usersCollection.find({ role }).sort({ createdAt: -1 }).toArray();
+            res.send(users);
+        })
+        // delete user
+        app.delete('/users/:id', async (req, res) => {
+            const query = { _id: ObjectId(req.params.id) };
+            const result = await usersCollection.deleteOne(query);
+            res.send(result);
+        })
     } finally {
         // 
     }
