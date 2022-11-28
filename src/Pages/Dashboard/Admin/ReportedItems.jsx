@@ -2,9 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import toast from 'react-hot-toast';
 import Heading from '../../../components/Heading';
+import Spinner from '../../../components/Spinner';
 
 const ReportedItems = () => {
-    const { data: reportedProducts = [], refetch } = useQuery({
+    const { data: reportedProducts = [], refetch, isLoading } = useQuery({
         queryKey: ['reportedProducts'],
         queryFn: () => fetch(`https://dailydeals-server.vercel.app/reportedProducts`, {
             headers: {
@@ -35,53 +36,54 @@ const ReportedItems = () => {
         <div>
             <Heading>Reported Items</Heading>
             {
-                reportedProducts.length < 1 ?
-                    <h3 className='text-center text-2xl font-thin'>Nothing's Found</h3>
-                    :
-                    <div className="overflow-x-auto w-full">
-                        <table className="table w-full">
-                            <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    reportedProducts.map(item => <tr key={item._id}>
-                                        <td>
-                                            <div className="flex items-center space-x-3">
-                                                <div className="avatar">
-                                                    <div className="mask mask-squircle w-12 h-12">
-                                                        <img src={item.image} alt="Avatar Tailwind CSS Component" />
+                isLoading ? <Spinner /> :
+                    reportedProducts.length < 1 ?
+                        <h3 className='text-center text-2xl font-thin'>Nothing's Found</h3>
+                        :
+                        <div className="overflow-x-auto w-full">
+                            <table className="table w-full">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        reportedProducts.map(item => <tr key={item._id}>
+                                            <td>
+                                                <div className="flex items-center space-x-3">
+                                                    <div className="avatar">
+                                                        <div className="mask mask-squircle w-12 h-12">
+                                                            <img src={item.image} alt="Avatar Tailwind CSS Component" />
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <div className="font-bold">
+                                                            {
+                                                                item.name.length > 25 ?
+                                                                    <div className="tooltip tooltip-bottom" data-tip={item.name}>
+                                                                        {item.name.slice(0, 25) + '...'}
+                                                                    </div>
+                                                                    :
+                                                                    item.name
+                                                            }
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div>
-                                                    <div className="font-bold">
-                                                        {
-                                                            item.name.length > 25 ?
-                                                                <div className="tooltip tooltip-bottom" data-tip={item.name}>
-                                                                    {item.name.slice(0, 25) + '...'}
-                                                                </div>
-                                                                :
-                                                                item.name
-                                                        }
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <span className="badge badge-ghost">{item.personWhoReported}</span>
-                                        </td>
-                                        <th>
-                                            <button onClick={() => handleDeleteReport(item._id)} className="btn btn-error btn-xs">delete product</button>
-                                        </th>
-                                    </tr>)
-                                }
-                            </tbody>
-                        </table>
-                    </div>
+                                            </td>
+                                            <td>
+                                                <span className="badge badge-ghost">{item.personWhoReported}</span>
+                                            </td>
+                                            <th>
+                                                <button onClick={() => handleDeleteReport(item._id)} className="btn btn-error btn-xs">delete product</button>
+                                            </th>
+                                        </tr>)
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
             }
         </div>
     );
