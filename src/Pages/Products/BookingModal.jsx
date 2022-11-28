@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import FieldError from '../../components/FieldError';
+import SpinnerSm from '../../components/SpinnerSm';
 import { useAuth } from '../../contexts/AuthProvider';
 
 const BookingModal = ({ product, setModalData }) => {
+    const [spinner, setSpinner] = useState(false);
     const { user } = useAuth();
     const { _id, name, price, image } = product;
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = data => {
+        setSpinner(true);
         const bookingProduct = {
             productName: name,
             productId: _id,
@@ -30,6 +33,7 @@ const BookingModal = ({ product, setModalData }) => {
             .then(res => res.json())
             .then(result => {
                 if (result.insertedId) {
+                    setSpinner(true);
                     toast.success(`${name} is booked successfully`)
                     setModalData(null);
                 }
@@ -92,7 +96,9 @@ const BookingModal = ({ product, setModalData }) => {
                             <textarea {...register("message")} className="textarea textarea-bordered" placeholder="message (optional)"></textarea>
                         </div>
                         <div className="form-control mt-4">
-                            <button className="btn btn-primary">Add Product</button>
+                            <button className="btn btn-primary">
+                                {spinner ? <>Loading <SpinnerSm /></> : 'Confirm Order'}
+                            </button>
                         </div>
                     </form>
                 </div>

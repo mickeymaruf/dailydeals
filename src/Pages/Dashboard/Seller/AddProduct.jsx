@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import uploadImage from '../../../apis/uploadImage';
@@ -7,14 +7,17 @@ import Heading from '../../../components/Heading';
 import { useAuth } from '../../../contexts/AuthProvider';
 import { CategoryContext } from '../../../contexts/CategoryProvider';
 import toast from 'react-hot-toast';
+import SpinnerSm from '../../../components/SpinnerSm';
 
 const AddProduct = () => {
+    const [spinner, setSpinner] = useState(false);
     const { user } = useAuth();
     const { categories } = useContext(CategoryContext);
     const navigate = useNavigate();
 
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = data => {
+        setSpinner(true);
         const { category, name, image, price, priceOriginal, contact, location, used } = data;
         const product = {
             category, name, price, price, priceOriginal, used,
@@ -42,14 +45,21 @@ const AddProduct = () => {
                         .then(res => res.json())
                         .then(data => {
                             if (data.insertedId) {
+                                setSpinner(true);
                                 navigate("/dashboard/myproducts");
                                 toast.success("Product added successfully");
                             }
                         })
-                        .catch(err => console.log(err));
+                        .catch(err => {
+                            console.log(err);
+                            setSpinner(true);
+                        });
                 }
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                setSpinner(true);
+                console.log(err)
+            })
     }
     return (
         <div>
@@ -155,7 +165,9 @@ const AddProduct = () => {
                         <textarea {...register("description")} className="textarea textarea-bordered" placeholder="description (optional)"></textarea>
                     </div>
                     <div className="form-control mt-4">
-                        <button className="btn btn-primary">Add Product</button>
+                        <button className="btn btn-primary">
+                            {spinner ? <>Loading <SpinnerSm /></> : 'Add Product'}
+                        </button>
                     </div>
                 </form>
             </div>
