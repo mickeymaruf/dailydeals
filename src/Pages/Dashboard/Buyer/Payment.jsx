@@ -13,13 +13,13 @@ const Payment = () => {
     return (
         <div>
             <Heading>Payment</Heading>
-            <div className='grid grid-cols-12 gap-5'>
-                <div className='col-span-7 rounded-lg'>
+            <div className='grid md:grid-cols-12 gap-5'>
+                <div className='order-last md:order-first md:col-span-7 rounded-lg'>
                     <Elements stripe={stripePromise}>
                         <CheckoutForm order={order} />
                     </Elements>
                 </div>
-                <div className='col-span-5 border p-3 rounded-lg'>
+                <div className='md:col-span-5 border p-3 rounded-lg'>
                     <h4 className='font-medium text-accent mb-3 border-b pb-2'>Product Details: </h4>
                     <div className="flex items-center space-x-3">
                         <div className="avatar">
