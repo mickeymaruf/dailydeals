@@ -2,7 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import Heading from '../../../components/Heading';
 import { useAuth } from '../../../contexts/AuthProvider';
-import moment from 'moment';
+import { Link } from 'react-router-dom';
+import { AiFillEye } from 'react-icons/ai';
 
 const MyOrders = () => {
     const { user } = useAuth()
@@ -16,7 +17,7 @@ const MyOrders = () => {
             .then(res => res.json())
     })
 
-    
+
     return (
         <div>
             <Heading>My Orders</Heading>
@@ -27,6 +28,7 @@ const MyOrders = () => {
                             <th>Product</th>
                             <th>Your Contact</th>
                             <th>Meeting location</th>
+                            <th>Payment</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -60,6 +62,23 @@ const MyOrders = () => {
                                 </td>
                                 <td>
                                     <div>{product.meetingLocation}</div>
+                                </td>
+                                <td>
+                                    {
+                                        product.paid ?
+                                            <>
+                                                <div className="dropdown dropdown-end">
+                                                    <label tabIndex={0} className="btn btn-xs btn-primary">paid<AiFillEye className='ml-1' /></label>
+                                                    <ul tabIndex={0} className="dropdown-content menu text-sm p-2 shadow bg-warning rounded-box">
+                                                        <li>Transaction Id: {product.transactionId}</li>
+                                                    </ul>
+                                                </div>
+                                            </>
+                                            :
+                                            <Link to={`/dashboard/payment/${product._id}`}>
+                                                <button className='btn btn-sm btn-info'>Pay</button>
+                                            </Link>
+                                    }
                                 </td>
                             </tr>)
                         }

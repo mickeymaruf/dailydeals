@@ -13,7 +13,7 @@ const BookingModal = ({ product, setModalData }) => {
             productName: name,
             price,
             image,
-            buyerName: user.name,
+            buyer: user.displayName,
             buyerEmail: user.email,
             buyerContact: data.contact,
             meetingLocation: data.location,

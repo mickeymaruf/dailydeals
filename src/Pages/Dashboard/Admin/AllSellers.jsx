@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import Heading from '../../../components/Heading';
 
 const AllSellers = () => {
-    const { data: sellers = [], refetch } = useQuery({
+    const { data: sellers = [], refetch, isLoading } = useQuery({
         queryKey: ['sellers'],
         queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/users?role=seller`, {
             headers: {

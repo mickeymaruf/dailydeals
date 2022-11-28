@@ -17,6 +17,7 @@ import ReportedItems from "../Pages/Dashboard/Admin/ReportedItems";
 import AdminRoute from "./AdminRoute";
 import SellerRoute from "./SellerRoute";
 import ErrorPage from "../Pages/Shared/ErrorPage";
+import Payment from "../Pages/Dashboard/Buyer/Payment";
 
 const router = createBrowserRouter([
     {
@@ -63,6 +64,11 @@ const router = createBrowserRouter([
             {
                 path: '/dashboard/myorders',
                 element: <MyOrders />
+            },
+            {
+                path: '/dashboard/payment/:id',
+                element: <Payment />,
+                loader: ({ params }) => fetch(`${import.meta.env.VITE_APP_API_URL}/bookings/${params.id}`),
             },
             {
                 path: '/dashboard/myproducts',

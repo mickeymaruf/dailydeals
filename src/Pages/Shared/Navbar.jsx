@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthProvider';
+import logo from '../../assets/images/logo.png'
 
 const Navbar = () => {
     const { user, logOut } = useAuth();
@@ -29,7 +30,10 @@ const Navbar = () => {
                             {navLinks}
                         </ul>
                     </div>
-                    <Link to="/" className="btn btn-ghost normal-case text-xl">Daily Deals</Link>
+                    <Link to="/" className='flex items-center gap-1'>
+                        <img className='w-16' src={logo} alt="" />
+                        <h2 className='text-xl font-medium font-blog'>Daily Deals</h2>
+                    </Link>
                 </div>
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal p-0">

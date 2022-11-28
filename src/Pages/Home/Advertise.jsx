@@ -12,11 +12,7 @@ const Advertise = () => {
     const { data: products = [], isLoading } = useQuery({
         queryKey: ['products'],
         refetchOnWindowFocus: false,
-        queryFn: () => axios.get(`${import.meta.env.VITE_APP_API_URL}/advertisedProducts`, {
-            headers: {
-                authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
-            }
-        })
+        queryFn: () => axios.get(`${import.meta.env.VITE_APP_API_URL}/advertisedProducts`)
             .then(data => data.data)
     })
 
