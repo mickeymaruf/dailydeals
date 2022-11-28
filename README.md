@@ -19,3 +19,6 @@ Live Site: [https://dailydeals-37e5b.web.app/](https://dailydeals-37e5b.web.app/
 - **Frontend:** React (Vite), Tailwindcss, daisyUI
 - **Backend:** NodeJS, Express JS, MongoDB
 - **Authentication:** Firebase
+
+adminEmail: maruf.hossain1@yahoo.com
+adminPassword: 123123
