@@ -10,7 +10,7 @@ const DashboardLayout = () => {
     return (
         <div>
             <Navbar />
-            <div className='max-w-screen-lg mx-auto xl:my-8 border bg-white'>
+            <div className='max-w-screen-lg mx-auto xl:my-8 lg:border bg-white'>
                 <div className="drawer drawer-mobile">
                     <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
                     <div className="drawer-content p-5 border-l">

@@ -12,7 +12,7 @@ const Products = () => {
     const navigation = useNavigation();
 
     return (
-        <div className="max-w-screen-lg mx-auto bg-white md:my-8 border rounded-sm lg:grid grid-cols-12">
+        <div className="max-w-screen-lg mx-auto bg-white md:my-8 lg:border rounded-sm lg:grid grid-cols-12">
             <div className='border-r col-span-3 p-5'>
                 <p className='text-sm text-accent mb-3 border-b pb-2'>Category</p>
                 <p className='mb-2 font-medium'>All Categories</p>
@@ -36,7 +36,10 @@ const Products = () => {
                 <div className='grid grid-cols-1 gap-5'>
                     {
                         navigation.state === "loading" ? <Spinner /> :
-                            products.map(product => <Product key={product._id} product={product} setModalData={setModalData} />)
+                            products.length < 1 ?
+                                <h3 className='text-center text-2xl font-thin'>Nothing's found!</h3>
+                                :
+                                products.map(product => <Product key={product._id} product={product} setModalData={setModalData} />)
                     }
                 </div>
             </div>

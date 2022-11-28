@@ -101,7 +101,7 @@ const Home = () => {
                     </SwiperSlide>
                 </Swiper>
             </div>
-            <div className="bg-white p-10 pt-8 my-8 border rounded-sm">
+            <div className="bg-white p-10 pt-8 my-8 lg:border rounded-sm">
                 <Advertise />
                 <Category />
                 <Service />

@@ -3,7 +3,7 @@ import Heading from '../../components/Heading';
 
 const Blog = () => {
     return (
-        <div className='py-5 my-10 max-w-screen-lg bg-white mx-auto border'>
+        <div className='py-5 lg:my-10 max-w-screen-lg bg-white mx-auto lg:border'>
             <Heading>Blog</Heading>
             <div className='pb-10 px-16 grid gap-10'>
                 <div>
