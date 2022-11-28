@@ -17,7 +17,7 @@ const CheckoutForm = ({ order }) => {
 
     useEffect(() => {
         // Create PaymentIntent as soon as the page loads
-        fetch(`${import.meta.env.VITE_APP_API_URL}/create-payment-intent`, {
+        fetch(`https://dailydeals-server.vercel.app/create-payment-intent`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -84,7 +84,7 @@ const CheckoutForm = ({ order }) => {
                 email: buyerEmail,
                 orderId: _id
             }
-            fetch(`${import.meta.env.VITE_APP_API_URL}/payments`, {
+            fetch(`https://dailydeals-server.vercel.app/payments`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

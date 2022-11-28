@@ -20,7 +20,7 @@ const Product = ({ product, setModalData }) => {
 
     // report to admin
     const reportToAdmin = () => {
-        fetch(`${import.meta.env.VITE_APP_API_URL}/products/report/${_id}?email=${user.email}`, {
+        fetch(`https://dailydeals-server.vercel.app/products/report/${_id}?email=${user.email}`, {
             method: "POST",
             headers: {
                 "content-type": "application/json",

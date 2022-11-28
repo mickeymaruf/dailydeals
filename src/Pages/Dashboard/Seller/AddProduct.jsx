@@ -31,7 +31,7 @@ const AddProduct = () => {
                 if (imageData.status === 200) {
                     product.image = imageData.data.url;
                     // create product
-                    fetch(`${import.meta.env.VITE_APP_API_URL}/products`, {
+                    fetch(`https://dailydeals-server.vercel.app/products`, {
                         method: 'POST',
                         headers: {
                             'content-type': 'application/json',

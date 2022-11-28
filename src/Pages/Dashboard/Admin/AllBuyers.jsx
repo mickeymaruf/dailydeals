@@ -6,7 +6,7 @@ import Heading from '../../../components/Heading';
 const AllBuyers = () => {
     const { data: buyers = [], refetch } = useQuery({
         queryKey: ['buyers'],
-        queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/users?role=buyer`, {
+        queryFn: () => fetch(`https://dailydeals-server.vercel.app/users?role=buyer`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
             }
@@ -17,7 +17,7 @@ const AllBuyers = () => {
     const handleDeleteUser = (id, name) => {
         const confirmDelete = confirm(`Are your sure want to delete ${name}`);
         if (confirmDelete) {
-            fetch(`${import.meta.env.VITE_APP_API_URL}/users/${id}`, {
+            fetch(`https://dailydeals-server.vercel.app/users/${id}`, {
                 method: 'DELETE',
                 headers: {
                     "content-type": "application/json",

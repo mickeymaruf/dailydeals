@@ -17,7 +17,7 @@ const SocialAuth = () => {
             .then(result => {
                 const user = result.user;
                 // check either the user is exist or not in the db
-                fetch(`${import.meta.env.VITE_APP_API_URL}/userIsExist?email=${user.email}`)
+                fetch(`https://dailydeals-server.vercel.app/userIsExist?email=${user.email}`)
                     .then(res => res.json())
                     .then(data => {
                         console.log(user.photoURL);

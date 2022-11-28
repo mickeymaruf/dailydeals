@@ -4,7 +4,7 @@ import axios from 'axios';
 const useUserRole = email => {
     const { data, isLoading, refetch: userRoleRefetch } = useQuery({
         queryKey: ['user', email],
-        queryFn: () => axios.get(`${import.meta.env.VITE_APP_API_URL}/users/role?email=${email}`),
+        queryFn: () => axios.get(`https://dailydeals-server.vercel.app/users/role?email=${email}`),
         refetchOnWindowFocus: false,
     })
     return [data?.data?.role, isLoading, userRoleRefetch];

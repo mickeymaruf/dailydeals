@@ -1,5 +1,5 @@
 export const saveUser = async userData => {
-    const res = await fetch(`${import.meta.env.VITE_APP_API_URL}/users`, {
+    const res = await fetch(`https://dailydeals-server.vercel.app/users`, {
         method: 'POST',
         headers: {
             'content-type': 'application/json'

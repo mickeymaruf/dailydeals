@@ -6,7 +6,7 @@ import Heading from '../../../components/Heading';
 const ReportedItems = () => {
     const { data: reportedProducts = [], refetch } = useQuery({
         queryKey: ['reportedProducts'],
-        queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/reportedProducts`, {
+        queryFn: () => fetch(`https://dailydeals-server.vercel.app/reportedProducts`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
             }
@@ -15,7 +15,7 @@ const ReportedItems = () => {
     })
 
     const handleDeleteReport = id => {
-        fetch(`${import.meta.env.VITE_APP_API_URL}/reportedProducts/${id}`, {
+        fetch(`https://dailydeals-server.vercel.app/reportedProducts/${id}`, {
             method: 'DELETE',
             headers: {
                 "content-type": "application/json",

@@ -6,7 +6,7 @@ import Heading from '../../../components/Heading';
 const AllSellers = () => {
     const { data: sellers = [], refetch, isLoading } = useQuery({
         queryKey: ['sellers'],
-        queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/users?role=seller`, {
+        queryFn: () => fetch(`https://dailydeals-server.vercel.app/users?role=seller`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
             }
@@ -17,7 +17,7 @@ const AllSellers = () => {
     const handleDeleteUser = (id, name) => {
         const confirmDelete = confirm(`Are your sure want to delete ${name}`);
         if (confirmDelete) {
-            fetch(`${import.meta.env.VITE_APP_API_URL}/users/${id}`, {
+            fetch(`https://dailydeals-server.vercel.app/users/${id}`, {
                 method: 'DELETE',
                 headers: {
                     "content-type": "application/json",
@@ -35,7 +35,7 @@ const AllSellers = () => {
     }
 
     const handleVerifyUser = (email, name) => {
-        fetch(`${import.meta.env.VITE_APP_API_URL}/verifyUser?email=${email}`, {
+        fetch(`https://dailydeals-server.vercel.app/verifyUser?email=${email}`, {
             headers: {
                 "content-type": "application/json",
                 authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
@@ -86,9 +86,9 @@ const AllSellers = () => {
                                 <th>
                                     {
                                         user.isVerified ?
-                                        <button className="btn btn-info btn-xs mr-2 text-white" disabled>verify</button>
-                                        :
-                                        <button onClick={() => handleVerifyUser(user.email, user.name)} className="btn btn-info btn-xs mr-2 text-white">verify</button>
+                                            <button className="btn btn-info btn-xs mr-2 text-white" disabled>verify</button>
+                                            :
+                                            <button onClick={() => handleVerifyUser(user.email, user.name)} className="btn btn-info btn-xs mr-2 text-white">verify</button>
                                     }
                                     <button onClick={() => handleDeleteUser(user._id, user.name)} className="btn btn-error btn-xs">delete</button>
                                 </th>

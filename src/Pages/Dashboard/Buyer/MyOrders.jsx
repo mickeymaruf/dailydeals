@@ -9,7 +9,7 @@ const MyOrders = () => {
     const { user } = useAuth()
     const { data: orders = [] } = useQuery({
         queryKey: ['orders', user?.email],
-        queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/myorders?email=${user?.email}`, {
+        queryFn: () => fetch(`https://dailydeals-server.vercel.app/myorders?email=${user?.email}`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
             }
