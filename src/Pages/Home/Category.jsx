@@ -25,6 +25,11 @@ const Category = () => {
                         slidesPerView: 3,
                         spaceBetween: 40
                     },
+                    // when window width is >= 840px
+                    840: {
+                        slidesPerView: 4,
+                        spaceBetween: 40
+                    },
                     // when window width is >= 1200px
                     1200: {
                         slidesPerView: 5,

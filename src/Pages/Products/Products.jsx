@@ -12,7 +12,7 @@ const Products = () => {
     const navigation = useNavigation();
 
     return (
-        <div className="max-w-screen-lg mx-auto bg-white my-8 border rounded-sm grid grid-cols-12">
+        <div className="max-w-screen-lg mx-auto bg-white md:my-8 border rounded-sm lg:grid grid-cols-12">
             <div className='border-r col-span-3 p-5'>
                 <p className='text-sm text-accent mb-3 border-b pb-2'>Category</p>
                 <p className='mb-2 font-medium'>All Categories</p>

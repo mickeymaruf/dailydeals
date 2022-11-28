@@ -40,11 +40,11 @@ const Product = ({ product, setModalData }) => {
     }
 
     return (
-        <div className='flex bg-white border border-warning rounded relative'>
+        <div className='flex flex-col md:flex-row bg-white border border-warning rounded relative'>
             <figure className='p-3'>
-                <img className='w-72 h-full object-cover' src={image} alt={name} />
+                <img className='w-72 mx-auto h-full object-cover' src={image} alt={name} />
             </figure>
-            <div className="p-3 pl-1 flex justify-between items-end w-full">
+            <div className="p-3 pt-0 md:p-3 md:pl-1 flex justify-between items-end w-full">
                 <div>
                     <h2 className="card-title">
                         {

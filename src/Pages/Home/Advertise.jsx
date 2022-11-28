@@ -27,7 +27,7 @@ const Advertise = () => {
     return (
         <div className='pt-5 mb-16'>
             <Heading>Advertisements</Heading>
-            <div className='grid grid-cols-2 gap-10'>
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-10'>
                 {
                     products.map(product => <AdvertisedProduct key={product._id} product={product} />)
                 }

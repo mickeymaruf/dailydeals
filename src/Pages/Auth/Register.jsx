@@ -8,13 +8,16 @@ import toast from 'react-hot-toast';
 import uploadImage from '../../apis/uploadImage';
 import { saveUser } from '../../apis/users';
 import { useJWT } from '../../hooks/useJWT';
+import SpinnerSm from '../../components/SpinnerSm';
 
 const Register = () => {
+    const [spinner, setSpinner] = useState(false);
     const { createUser, updateUser, userRoleRefetch } = useAuth();
     const navigate = useNavigate();
 
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = data => {
+        setSpinner(true);
         const { name, email, password, picture, role } = data;
 
         // upload image
@@ -39,6 +42,7 @@ const Register = () => {
                                     })
                                         .then(userResult => {
                                             if (userResult.insertedId) {
+                                                setSpinner(true);
                                                 // issue jwt
                                                 useJWT(user.email);
                                                 navigate("/");
@@ -53,6 +57,7 @@ const Register = () => {
                                 })
                         })
                         .catch(err => {
+                            setSpinner(false);
                             toast.error(err.message)
                             console.log(err);
                         })
@@ -113,7 +118,9 @@ const Register = () => {
                         </select>
                     </div>
                     <div className="form-control mt-5">
-                        <button className="btn btn-primary">Register</button>
+                        <button className="btn btn-primary">
+                            {spinner ? <>Loading <SpinnerSm /></> : 'Register'}
+                        </button>
                     </div>
                 </form>
                 <p className='text-sm text-center'>Already have an account? <Link to="/login" className='text-info hover:underline'>Login</Link></p>

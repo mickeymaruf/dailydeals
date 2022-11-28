@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthProvider';
 import SocialAuth from './SocialAuth';
@@ -7,8 +7,10 @@ import FieldError from '../../components/FieldError';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useJWT } from '../../hooks/useJWT';
+import SpinnerSm from '../../components/SpinnerSm';
 
 const Login = () => {
+    const [spinner, setSpinner] = useState(false);
     const { login } = useAuth();
     const location = useLocation();
     const navigate = useNavigate();
@@ -16,14 +18,17 @@ const Login = () => {
 
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = data => {
+        setSpinner(true);
         login(data.email, data.password)
             .then(result => {
                 const user = result.user;
+                setSpinner(false)
                 // issue jwt
                 useJWT(user.email);
                 navigate(from, { replace: true });
             })
             .catch(err => {
+                setSpinner(false)
                 toast.error(err.message)
                 console.log(err);
             });
@@ -56,7 +61,9 @@ const Login = () => {
                         </label>
                     </div>
                     <div className="form-control mt-2">
-                        <button className="btn btn-primary">Login</button>
+                        <button className="btn btn-primary">
+                            {spinner ? <>Loading <SpinnerSm /></> : 'Login'}
+                        </button>
                     </div>
                 </form>
                 <p className='text-sm text-center'>Don't have an account? <Link to="/register" className='text-info hover:underline'>Create an account</Link></p>

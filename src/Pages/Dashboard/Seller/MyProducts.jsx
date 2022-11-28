@@ -98,7 +98,7 @@ const MyProducts = () => {
                                 </td>
                                 <td>
                                     <p className='text-sm'>{product.location}</p>
-                                    <span className="badge badge-ghost badge-sm">Available</span>
+                                    <span className="badge badge-ghost badge-sm">{product.status === "sold" ? <span className='text-error font-bold'>sold out</span> : 'Available'}</span>
                                 </td>
                                 <td>
                                     <p className='text-xs'>{moment(product.createdAt).fromNow()}</p>

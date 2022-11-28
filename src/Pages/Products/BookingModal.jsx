@@ -11,6 +11,7 @@ const BookingModal = ({ product, setModalData }) => {
     const onSubmit = data => {
         const bookingProduct = {
             productName: name,
+            productId: _id,
             price,
             image,
             buyer: user.displayName,
