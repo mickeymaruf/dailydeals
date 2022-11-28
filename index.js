@@ -70,13 +70,14 @@ async function run() {
 
         // products
         app.get('/products', async (req, res) => {
-            const products = await productsCollection.find({}).sort({ createdAt: -1 }).toArray();
+            const query = { status: { $ne: "sold" } };
+            const products = await productsCollection.find(query).sort({ createdAt: -1 }).toArray();
             res.send(products);
         })
         // get products by category
         app.get('/category/:category_slug', async (req, res) => {
             const category_slug = req.params.category_slug;
-            const query = { category: category_slug };
+            const query = { category: category_slug, status: { $ne: "sold" } };
             const products = await productsCollection.find(query).sort({ createdAt: -1 }).toArray();
             res.send(products);
         })
@@ -124,7 +125,8 @@ async function run() {
 
         // get advertise products
         app.get('/advertisedProducts', async (req, res) => {
-            const products = await productsCollection.find({ isAdvertised: true }).sort({ createdAt: -1 }).toArray();
+            const query = { isAdvertised: true, status: { $ne: "sold" } }
+            const products = await productsCollection.find(query).sort({ createdAt: -1 }).toArray();
             res.send(products);
         })
 
@@ -241,13 +243,20 @@ async function run() {
             const payment = req.body;
             const result = await paymentsCollection.insertOne(payment);
             const query = { _id: ObjectId(payment.orderId) };
-            const updateDoc = {
+            const updateOrderDoc = {
                 $set: {
                     paid: true,
                     transactionId: payment.transactionId
                 }
             }
-            const updatedResult = await bookingsCollection.updateOne(query, updateDoc);
+            const updatedOrder = await bookingsCollection.updateOne(query, updateOrderDoc);
+
+            const updateProductStatusDoc = {
+                $set: {
+                    status: "sold",
+                }
+            }
+            const updatedProductStatus = await productsCollection.updateOne({ _id: ObjectId(payment.productId) }, updateProductStatusDoc);
             res.send(result);
         })
     } finally {
