@@ -7,18 +7,25 @@ import Spinner from '../../../components/Spinner';
 const AllBuyers = () => {
     const { data: buyers = [], refetch, isLoading } = useQuery({
         queryKey: ['buyers'],
-        queryFn: () => fetch(`https://dailydeals-server.vercel.app/users?role=buyer`, {
+        queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/users?role=buyer`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
             }
         })
-            .then(res => res.json())
+            .then(res => {
+                if (res.status === 401 || res.status === 403) {
+                    logOut()
+                    localStorage.removeItem('DAILY_DEALS_ACCESS_TOKEN')
+                    return []
+                }
+                return res.json()
+            })
     })
 
     const handleDeleteUser = (id, name) => {
         const confirmDelete = confirm(`Are your sure want to delete ${name}`);
         if (confirmDelete) {
-            fetch(`https://dailydeals-server.vercel.app/users/${id}`, {
+            fetch(`${import.meta.env.VITE_APP_API_URL}/users/${id}`, {
                 method: 'DELETE',
                 headers: {
                     "content-type": "application/json",

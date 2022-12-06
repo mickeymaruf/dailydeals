@@ -3,7 +3,7 @@ import { Link, useLoaderData, useNavigation } from 'react-router-dom';
 import Spinner from '../../components/Spinner';
 import { CategoryContext } from '../../contexts/CategoryProvider';
 import BookingModal from './BookingModal';
-import Product from './Product';
+import ProductCard from './ProductCard';
 
 const Products = () => {
     const { categories, isLoading } = useContext(CategoryContext);
@@ -32,14 +32,14 @@ const Products = () => {
                     }
                 </ul>
             </div>
-            <div className='col-span-9 p-5'>
+            <div className='col-span-8 p-5'>
                 <div className='grid grid-cols-1 gap-5'>
                     {
                         navigation.state === "loading" ? <Spinner /> :
                             products.length < 1 ?
                                 <h3 className='text-center text-2xl font-thin'>Nothing's found!</h3>
                                 :
-                                products.map(product => <Product key={product._id} product={product} setModalData={setModalData} />)
+                                products.map(product => <ProductCard key={product._id} product={product} setModalData={setModalData} />)
                     }
                 </div>
             </div>

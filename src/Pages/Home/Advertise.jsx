@@ -12,7 +12,7 @@ const Advertise = () => {
     const { data: products = [], isLoading } = useQuery({
         queryKey: ['products'],
         refetchOnWindowFocus: false,
-        queryFn: () => axios.get(`https://dailydeals-server.vercel.app/advertisedProducts`)
+        queryFn: () => axios.get(`${import.meta.env.VITE_APP_API_URL}/advertisedProducts`)
             .then(data => data.data)
     })
 

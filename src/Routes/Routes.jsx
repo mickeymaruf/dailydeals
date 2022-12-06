@@ -18,6 +18,7 @@ import AdminRoute from "./AdminRoute";
 import SellerRoute from "./SellerRoute";
 import ErrorPage from "../Pages/Shared/ErrorPage";
 import Payment from "../Pages/Dashboard/Buyer/Payment";
+import Product from "../Pages/Products/Product";
 
 const router = createBrowserRouter([
     {
@@ -42,13 +43,18 @@ const router = createBrowserRouter([
             },
             {
                 path: '/products',
-                element: <RequireAuth><Products /></RequireAuth>,
-                loader: () => fetch(`https://dailydeals-server.vercel.app/products`),
+                element: <Products />,
+                loader: () => fetch(`${import.meta.env.VITE_APP_API_URL}/products`),
             },
             {
                 path: '/category/:slug',
-                element: <RequireAuth><Products /></RequireAuth>,
-                loader: ({ params }) => fetch(`https://dailydeals-server.vercel.app/category/${params.slug}`)
+                element: <Products />,
+                loader: ({ params }) => fetch(`${import.meta.env.VITE_APP_API_URL}/category/${params.slug}`)
+            },
+            {
+                path: '/products/:id',
+                element: <Product />,
+                loader: ({ params }) => fetch(`${import.meta.env.VITE_APP_API_URL}/products/${params.id}`)
             },
         ],
         errorElement: <ErrorPage />
@@ -68,7 +74,7 @@ const router = createBrowserRouter([
             {
                 path: '/dashboard/payment/:id',
                 element: <Payment />,
-                loader: ({ params }) => fetch(`https://dailydeals-server.vercel.app/bookings/${params.id}`),
+                loader: ({ params }) => fetch(`${import.meta.env.VITE_APP_API_URL}/bookings/${params.id}`),
             },
             {
                 path: '/dashboard/myproducts',

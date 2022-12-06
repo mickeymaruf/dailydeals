@@ -3,22 +3,31 @@ import React from 'react';
 import toast from 'react-hot-toast';
 import Heading from '../../../components/Heading';
 import Spinner from '../../../components/Spinner';
+import { useAuth } from '../../../contexts/AuthProvider';
 
 const AllSellers = () => {
+    const { logOut } = useAuth();
     const { data: sellers = [], refetch, isLoading } = useQuery({
         queryKey: ['sellers'],
-        queryFn: () => fetch(`https://dailydeals-server.vercel.app/users?role=seller`, {
+        queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/users?role=seller`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
             }
         })
-            .then(res => res.json())
+            .then(res => {
+                if (res.status === 401 || res.status === 403) {
+                    logOut()
+                    localStorage.removeItem('DAILY_DEALS_ACCESS_TOKEN')
+                    return []
+                }
+                return res.json()
+            })
     })
 
     const handleDeleteUser = (id, name) => {
         const confirmDelete = confirm(`Are your sure want to delete ${name}`);
         if (confirmDelete) {
-            fetch(`https://dailydeals-server.vercel.app/users/${id}`, {
+            fetch(`${import.meta.env.VITE_APP_API_URL}/users/${id}`, {
                 method: 'DELETE',
                 headers: {
                     "content-type": "application/json",
@@ -36,7 +45,7 @@ const AllSellers = () => {
     }
 
     const handleVerifyUser = (email, name) => {
-        fetch(`https://dailydeals-server.vercel.app/verifyUser?email=${email}`, {
+        fetch(`${import.meta.env.VITE_APP_API_URL}/verifyUser?email=${email}`, {
             headers: {
                 "content-type": "application/json",
                 authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`

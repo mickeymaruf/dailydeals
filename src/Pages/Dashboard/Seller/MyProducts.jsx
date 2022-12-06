@@ -12,7 +12,7 @@ const MyProducts = () => {
     const { data: products = [], refetch, isLoading } = useQuery({
         queryKey: ['products', user?.email],
         refetchOnWindowFocus: false,
-        queryFn: () => fetch(`https://dailydeals-server.vercel.app/myproducts?email=${user?.email}`, {
+        queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/myproducts?email=${user?.email}`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
             }
@@ -29,7 +29,7 @@ const MyProducts = () => {
 
     // handle delete product
     const handleDeleteProduct = id => {
-        axios.delete(`https://dailydeals-server.vercel.app/products/${id}`, {
+        axios.delete(`${import.meta.env.VITE_APP_API_URL}/products/${id}`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
             }
@@ -44,7 +44,7 @@ const MyProducts = () => {
 
     // advertise product
     const advertiseProduct = (id, name) => {
-        fetch(`https://dailydeals-server.vercel.app/products/${id}`, {
+        fetch(`${import.meta.env.VITE_APP_API_URL}/products/${id}`, {
             method: 'PUT',
             headers: {
                 authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`

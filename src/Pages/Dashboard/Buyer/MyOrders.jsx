@@ -7,15 +7,21 @@ import { AiFillEye } from 'react-icons/ai';
 import Spinner from '../../../components/Spinner';
 
 const MyOrders = () => {
-    const { user } = useAuth()
+    const { user, logOut } = useAuth()
     const { data: orders = [], isLoading } = useQuery({
         queryKey: ['orders', user?.email],
-        queryFn: () => fetch(`https://dailydeals-server.vercel.app/myorders?email=${user?.email}`, {
+        queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/myorders?email=${user?.email}`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
             }
         })
-            .then(res => res.json())
+            .then(res => {
+                if (res.status === 403 || res.status === 401) {
+                    logOut();
+                    return [];
+                }
+                return res.json();
+            })
     })
 
     return (

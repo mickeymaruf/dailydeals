@@ -23,7 +23,7 @@ const BookingModal = ({ product, setModalData }) => {
             meetingLocation: data.location,
             message: data.message
         }
-        fetch(`https://dailydeals-server.vercel.app/bookings`, {
+        fetch(`${import.meta.env.VITE_APP_API_URL}/bookings`, {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'

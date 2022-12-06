@@ -32,7 +32,7 @@ const Navbar = () => {
                     </div>
                     <Link to="/" className='flex items-center gap-1'>
                         <img className='w-12' src={logo} alt="" />
-                        <h2 className='text-xl font-medium'>Daily Deals</h2>
+                        <h2 className='text-xl font-logo mt-2'>Daily Deals</h2>
                     </Link>
                 </div>
                 <div className="navbar-center hidden lg:flex">

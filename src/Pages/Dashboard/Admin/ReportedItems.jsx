@@ -7,7 +7,7 @@ import Spinner from '../../../components/Spinner';
 const ReportedItems = () => {
     const { data: reportedProducts = [], refetch, isLoading } = useQuery({
         queryKey: ['reportedProducts'],
-        queryFn: () => fetch(`https://dailydeals-server.vercel.app/reportedProducts`, {
+        queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/reportedProducts`, {
             headers: {
                 authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
             }
@@ -16,7 +16,7 @@ const ReportedItems = () => {
     })
 
     const handleDeleteReport = id => {
-        fetch(`https://dailydeals-server.vercel.app/reportedProducts/${id}`, {
+        fetch(`${import.meta.env.VITE_APP_API_URL}/reportedProducts/${id}`, {
             method: 'DELETE',
             headers: {
                 "content-type": "application/json",
