@@ -33,6 +33,7 @@ const Login = () => {
                 console.log(err);
             });
     }
+    console.log(from);
     return (
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100 mx-auto my-20">
             <div className="card-body">

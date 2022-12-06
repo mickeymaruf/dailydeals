@@ -12,6 +12,8 @@ const googleProvider = new GoogleAuthProvider();
 const SocialAuth = () => {
     const { providerLogin, userRoleRefetch } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
     const handleProviderLogin = () => {
         providerLogin(googleProvider)
             .then(result => {
@@ -31,7 +33,7 @@ const SocialAuth = () => {
                             })
                                 .then(userResult => {
                                     if (userResult.insertedId) {
-                                        navigate("/");
+                                        navigate(from);
                                         userRoleRefetch();
                                         toast.success("Registration successfull");
                                     }
@@ -44,7 +46,7 @@ const SocialAuth = () => {
                         // issue jwt
                         useJWT(user.email);
                     })
-                navigate("/");
+                navigate(from);
             })
             .catch(err => {
                 toast.error(err.message);

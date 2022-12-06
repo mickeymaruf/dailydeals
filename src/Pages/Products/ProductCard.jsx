@@ -19,27 +19,6 @@ const ProductCard = ({ product, setModalData }) => {
             .then(data => setSellerIsVerified(data));
     }, [sellerEmail])
 
-    // report to admin
-    const reportToAdmin = () => {
-        fetch(`${import.meta.env.VITE_APP_API_URL}/products/report/${_id}?email=${user.email}`, {
-            method: "POST",
-            headers: {
-                "content-type": "application/json",
-                authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
-            },
-            body: JSON.stringify({ name, image })
-        })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                if (data.insertedId) {
-                    toast.success('Reported successfully');
-                } else {
-                    toast.error('Already reported');
-                }
-            })
-    }
-
     return (
         <div className='flex flex-col md:flex-row bg-white border border-warning rounded relative'>
             <figure className='p-3'>
@@ -75,24 +54,7 @@ const ProductCard = ({ product, setModalData }) => {
                     <p className='text-sm text-accent'>Posted at: {moment(createdAt).format("h:mm a")}</p>
                 </div>
                 <Link to={`/products/${_id}`}><button className="btn btn-sm btn-primary absolute bottom-0 right-0 mr-3 mb-3">View Details</button></Link>
-                {/* {
-                    user?.email === sellerEmail ?
-                        <p className='text-xs'>You can't book your own product</p>
-                        :
-                        user?.email ?
-                            <label onClick={() => setModalData(product)} htmlFor="bookingModal" className="btn btn-primary">Book Now</label>
-                            :
-                            <Link to="/login"><button className="btn btn-primary">Book Now</button></Link>
-                } */}
             </div>
-            {
-                user?.email &&
-                <div className='absolute top-0 right-0'>
-                    <button onClick={reportToAdmin} className='btn p-0 min-h-fit h-fit bg-inherit border-0 hover:bg-inherit'>
-                        <MdReportGmailerrorred className='h-7 w-7 m-px text-red-500' />
-                    </button>
-                </div>
-            }
         </div>
     );
 };

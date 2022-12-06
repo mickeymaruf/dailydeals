@@ -6,3 +6,11 @@
     user-select: none;
     /* Standard syntax */
 }
+
+.full_view_Icon {
+    display: none;
+}
+
+.product_Image:hover>.full_view_Icon {
+    display: block;
+}

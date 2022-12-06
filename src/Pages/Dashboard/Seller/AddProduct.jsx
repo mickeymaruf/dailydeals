@@ -20,7 +20,7 @@ const AddProduct = () => {
         setSpinner(true);
         const { category, name, image, price, priceOriginal, contact, location, used } = data;
         const product = {
-            category, name, price, price, priceOriginal, used,
+            category, name, price, priceOriginal, used,
             location, contact,
             sellerName: user.displayName,
             sellerEmail: user.email
