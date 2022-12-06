@@ -81,6 +81,12 @@ async function run() {
             const products = await productsCollection.find(query).sort({ createdAt: -1 }).toArray();
             res.send(products);
         })
+        // get product by id
+        app.get('/products/:id', async (req, res) => {
+            const query = { _id: ObjectId(req.params.id) };
+            const product = await productsCollection.findOne(query);
+            res.send(product);
+        })
         app.post('/products', verifyJWT, verifySeller, async (req, res) => {
             const product = req.body;
             // adding date & time
