@@ -1,15 +1,17 @@
 import React, { useContext, useState } from 'react';
-import { Link, useLoaderData, useNavigation } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Spinner from '../../components/Spinner';
 import { CategoryContext } from '../../contexts/CategoryProvider';
+import { useGetProductsQuery } from '../../features/product/productApi';
 import BookingModal from './BookingModal';
 import ProductCard from './ProductCard';
 
 const Products = () => {
+    const { slug } = useParams();
+    console.log(slug);
+    const { data: products, isLoading: isProductsLoading } = useGetProductsQuery(slug || '');
     const { categories, isLoading } = useContext(CategoryContext);
-    const products = useLoaderData();
     const [modalData, setModalData] = useState(null);
-    const navigation = useNavigation();
 
     return (
         <div className="max-w-screen-lg mx-auto bg-white md:my-8 lg:border rounded-sm lg:grid grid-cols-12">
@@ -35,11 +37,11 @@ const Products = () => {
             <div className='col-span-8 p-5'>
                 <div className='grid grid-cols-1 gap-5'>
                     {
-                        navigation.state === "loading" ? <Spinner /> :
-                            products.length < 1 ?
+                        isProductsLoading ? <Spinner /> :
+                            products?.length < 1 ?
                                 <h3 className='text-center text-2xl font-thin'>Nothing's found!</h3>
                                 :
-                                products.map(product => <ProductCard key={product._id} product={product} setModalData={setModalData} />)
+                                products?.map(product => <ProductCard key={product._id} product={product} setModalData={setModalData} />)
                     }
                 </div>
             </div>

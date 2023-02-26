@@ -43,18 +43,15 @@ const router = createBrowserRouter([
             },
             {
                 path: '/products',
-                element: <Products />,
-                loader: () => fetch(`${import.meta.env.VITE_APP_API_URL}/products`),
+                element: <Products />
             },
             {
                 path: '/category/:slug',
                 element: <Products />,
-                loader: ({ params }) => fetch(`${import.meta.env.VITE_APP_API_URL}/category/${params.slug}`)
             },
             {
                 path: '/products/:id',
                 element: <Product />,
-                loader: ({ params }) => fetch(`${import.meta.env.VITE_APP_API_URL}/products/${params.id}`)
             },
         ],
         errorElement: <ErrorPage />

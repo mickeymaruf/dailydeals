@@ -1,16 +1,18 @@
 import moment from 'moment';
-import React from 'react';
 import { ImLocation } from 'react-icons/im';
 import { BiFullscreen } from 'react-icons/bi';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
-import { Link, useLoaderData, useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthProvider';
 import { AiFillStar, AiOutlineStop } from 'react-icons/ai';
+import { useGetProductQuery } from '../../features/product/productApi';
 
 const Product = () => {
+    const { id } = useParams();
+    const { data: product } = useGetProductQuery(id);
+    const { _id, category, name, image, price, priceOriginal, contact, location: buyerLocation, used, createdAt, sellerName, sellerEmail } = product || {};
+
     const { user } = useAuth();
-    const product = useLoaderData();
-    const { _id, category, name, image, price, priceOriginal, contact, location: buyerLocation, used, createdAt, sellerName, sellerEmail } = product;
     const location = useLocation();
     // report to admin
     const reportToAdmin = () => {
