@@ -10,18 +10,22 @@ import CategoryProvider from './contexts/CategoryProvider';
 import AuthProvider from './contexts/AuthProvider';
 import { Toaster } from 'react-hot-toast';
 import 'react-photo-view/dist/react-photo-view.css';
+import { Provider } from 'react-redux';
+import store from './app/store';
 
 const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <CategoryProvider>
-        <AuthProvider>
-          <App />
-          <Toaster />
-        </AuthProvider>
-      </CategoryProvider>
-    </QueryClientProvider>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <CategoryProvider>
+          <AuthProvider>
+            <App />
+            <Toaster />
+          </AuthProvider>
+        </CategoryProvider>
+      </QueryClientProvider>
+    </Provider>
   </React.StrictMode>
 )

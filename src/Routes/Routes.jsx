@@ -11,7 +11,6 @@ import MyProducts from "../Pages/Dashboard/Seller/MyProducts";
 import AllSellers from "../Pages/Dashboard/Admin/AllSellers";
 import AllBuyers from "../Pages/Dashboard/Admin/AllBuyers";
 import MyOrders from "../Pages/Dashboard/Buyer/MyOrders";
-import Blog from "../Pages/Others/Blog";
 import RequireAuth from "./RequireAuth";
 import ReportedItems from "../Pages/Dashboard/Admin/ReportedItems";
 import AdminRoute from "./AdminRoute";
@@ -36,10 +35,6 @@ const router = createBrowserRouter([
             {
                 path: '/register',
                 element: <Register />
-            },
-            {
-                path: '/blog',
-                element: <Blog />
             },
             {
                 path: '/products',

@@ -8,7 +8,42 @@ const productApi = apis.injectEndpoints({
         getProduct: builder.query({
             query: (id) => `/products/${id}`,
         }),
+        addProduct: builder.mutation({
+            query: (data) => ({
+                url: `/products`,
+                method: 'POST',
+                body: data
+            }),
+        }),
+        deleteProduct: builder.mutation({
+            query: (id) => ({
+                url: `/products/${id}`,
+                method: 'DELETE'
+            }),
+            invalidatesTags: ['MyProducts']
+        }),
+
+
+        getMyProducts: builder.query({
+            query: (email) => `/myproducts?email=${email}`,
+            providesTags: ['MyProducts']
+        }),
+        advertiseProduct: builder.mutation({
+            query: (id) => ({
+                url: `/products/${id}`,
+                method: 'PUT'
+            }),
+            invalidatesTags: ['MyProducts']
+        }),
     })
 })
 
-export const { useGetProductsQuery, useGetProductQuery } = productApi;
+export const {
+    useGetProductsQuery,
+    useGetProductQuery,
+    useAddProductMutation,
+    useDeleteProductMutation,
+    useGetMyProductsQuery,
+    useAdvertiseProductMutation
+}
+    = productApi;

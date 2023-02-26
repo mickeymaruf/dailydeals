@@ -1,62 +1,33 @@
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import Heading from '../../../components/Heading';
 import { useAuth } from '../../../contexts/AuthProvider';
 import moment from 'moment';
-import axios from 'axios';
 import toast from 'react-hot-toast';
 import Spinner from '../../../components/Spinner';
+import { useAdvertiseProductMutation, useDeleteProductMutation, useGetMyProductsQuery } from '../../../features/product/productApi';
 
 const MyProducts = () => {
-    const { user, logOut } = useAuth();
-    const { data: products = [], refetch, isLoading } = useQuery({
-        queryKey: ['products', user?.email],
-        refetchOnWindowFocus: false,
-        queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/myproducts?email=${user?.email}`, {
-            headers: {
-                authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
-            }
-        })
-            .then(res => {
-                if (res.status === 401 || res.status === 403) {
-                    logOut()
-                    localStorage.removeItem('DAILY_DEALS_ACCESS_TOKEN')
-                    return []
-                }
-                return res.json()
-            })
-    })
+    const { user } = useAuth();
+    const { data: products = [], isLoading } = useGetMyProductsQuery(user.email);
 
     // handle delete product
+    const [deleteProduct] = useDeleteProductMutation();
     const handleDeleteProduct = id => {
-        axios.delete(`${import.meta.env.VITE_APP_API_URL}/products/${id}`, {
-            headers: {
-                authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
+        deleteProduct(id).then(data => {
+            if (data?.data?.deletedCount > 0) {
+                toast.success("Product deleted!");
             }
         })
-            .then(data => {
-                if (data.data.deletedCount > 0) {
-                    refetch();
-                    toast.success("Product deleted!");
-                }
-            })
     }
 
     // advertise product
-    const advertiseProduct = (id, name) => {
-        fetch(`${import.meta.env.VITE_APP_API_URL}/products/${id}`, {
-            method: 'PUT',
-            headers: {
-                authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
+    const [advertiseProduct] = useAdvertiseProductMutation()
+    const handleAdvertiseProduct = (id, name) => {
+        advertiseProduct(id).then(data => {
+            if (data?.data?.modifiedCount) {
+                toast.success(`${name} advertised successfully`);
             }
         })
-            .then(res => res.json())
-            .then(data => {
-                if (data.modifiedCount) {
-                    refetch();
-                    toast.success(`${name} advertised successfully`);
-                }
-            })
     }
 
     return (
@@ -114,7 +85,7 @@ const MyProducts = () => {
                                                     product.isAdvertised ?
                                                         <button className="btn btn-warning btn-xs mr-2" disabled>Advertise</button>
                                                         :
-                                                        <button onClick={() => advertiseProduct(product._id, product.name)} className="btn btn-warning btn-xs mr-2">Advertise</button>
+                                                        <button onClick={() => handleAdvertiseProduct(product._id, product.name)} className="btn btn-warning btn-xs mr-2">Advertise</button>
                                                 }
                                                 <button onClick={() => handleDeleteProduct(product._id)} className="btn btn-error btn-xs">Delete</button>
                                             </th>

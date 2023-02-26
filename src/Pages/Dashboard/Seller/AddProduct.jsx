@@ -8,12 +8,16 @@ import { useAuth } from '../../../contexts/AuthProvider';
 import { CategoryContext } from '../../../contexts/CategoryProvider';
 import toast from 'react-hot-toast';
 import SpinnerSm from '../../../components/SpinnerSm';
+import { useAddProductMutation } from '../../../features/product/productApi';
+import { useEffect } from 'react';
 
 const AddProduct = () => {
     const [spinner, setSpinner] = useState(false);
     const { user } = useAuth();
     const { categories } = useContext(CategoryContext);
     const navigate = useNavigate();
+
+    const [addProduct, { data: productData }] = useAddProductMutation();
 
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = data => {
@@ -34,26 +38,7 @@ const AddProduct = () => {
                 if (imageData.status === 200) {
                     product.image = imageData.data.url;
                     // create product
-                    fetch(`${import.meta.env.VITE_APP_API_URL}/products`, {
-                        method: 'POST',
-                        headers: {
-                            'content-type': 'application/json',
-                            authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
-                        },
-                        body: JSON.stringify(product)
-                    })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.insertedId) {
-                                setSpinner(true);
-                                navigate("/dashboard/myproducts");
-                                toast.success("Product added successfully");
-                            }
-                        })
-                        .catch(err => {
-                            console.log(err);
-                            setSpinner(true);
-                        });
+                    addProduct(product)
                 }
             })
             .catch(err => {
@@ -61,6 +46,16 @@ const AddProduct = () => {
                 console.log(err)
             })
     }
+
+    useEffect(() => {
+        // actions on product get added
+        if (productData?.insertedId) {
+            setSpinner(true);
+            navigate("/dashboard/myproducts");
+            toast.success("Product added successfully");
+        }
+    }, [productData])
+
     return (
         <div>
             <Heading>Add A Product</Heading>

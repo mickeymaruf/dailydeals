@@ -1,14 +1,18 @@
-import { Provider } from 'react-redux'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { RouterProvider } from 'react-router-dom'
-import store from './app/store'
+import { setAuthToken } from './features/auth/authSlice'
 import router from './Routes/Routes'
 import './styles/App.css'
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setAuthToken(localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')))
+  }, [])
+
   return (
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
+    <RouterProvider router={router} />
   )
 }
 
