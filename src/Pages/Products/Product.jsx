@@ -5,28 +5,21 @@ import { PhotoProvider, PhotoView } from 'react-photo-view';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthProvider';
 import { AiFillStar, AiOutlineStop } from 'react-icons/ai';
-import { useGetProductQuery } from '../../features/product/productApi';
+import { useGetProductQuery, useReportProductMutation } from '../../features/product/productApi';
 
 const Product = () => {
     const { id } = useParams();
     const { data: product } = useGetProductQuery(id);
     const { _id, category, name, image, price, priceOriginal, contact, location: buyerLocation, used, createdAt, sellerName, sellerEmail } = product || {};
 
+    const [reportProduct] = useReportProductMutation();
+
     const { user } = useAuth();
     const location = useLocation();
     // report to admin
     const reportToAdmin = () => {
-        fetch(`${import.meta.env.VITE_APP_API_URL}/products/report/${_id}?email=${user.email}`, {
-            method: "POST",
-            headers: {
-                "content-type": "application/json",
-                authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
-            },
-            body: JSON.stringify({ name, image })
-        })
-            .then(res => res.json())
+        reportProduct({ _id, email, data: { name, image } })
             .then(data => {
-                console.log(data);
                 if (data.insertedId) {
                     toast.success('Reported successfully');
                 } else {

@@ -1,28 +1,14 @@
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import Heading from '../../../components/Heading';
 import { useAuth } from '../../../contexts/AuthProvider';
 import { Link } from 'react-router-dom';
 import { AiFillEye } from 'react-icons/ai';
 import Spinner from '../../../components/Spinner';
+import { useGetMyOrdersQuery } from '../../../features/buyer/buyerApi';
 
 const MyOrders = () => {
     const { user, logOut } = useAuth()
-    const { data: orders = [], isLoading } = useQuery({
-        queryKey: ['orders', user?.email],
-        queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/myorders?email=${user?.email}`, {
-            headers: {
-                authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
-            }
-        })
-            .then(res => {
-                if (res.status === 403 || res.status === 401) {
-                    logOut();
-                    return [];
-                }
-                return res.json();
-            })
-    })
+    const { data: orders = [], isLoading } = useGetMyOrdersQuery(user?.email);
 
     return (
         <div>

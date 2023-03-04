@@ -3,6 +3,7 @@ import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { FaCheckCircle } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import SpinnerSm from '../../../components/SpinnerSm'
+import { useCreatePaymentIntentMutation, useMakePaymentsMutation } from '../../../features/buyer/buyerApi';
 
 const CheckoutForm = ({ order }) => {
     const [clientSecret, setClientSecret] = useState("");
@@ -15,17 +16,12 @@ const CheckoutForm = ({ order }) => {
     const stripe = useStripe();
     const elements = useElements();
 
+    const [createPaymentIntent] = useCreatePaymentIntentMutation();
+    const [makePayments] = useMakePaymentsMutation();
+
     useEffect(() => {
         // Create PaymentIntent as soon as the page loads
-        fetch(`${import.meta.env.VITE_APP_API_URL}/create-payment-intent`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
-            },
-            body: JSON.stringify({ price }),
-        })
-            .then((res) => res.json())
+        createPaymentIntent({ price })
             .then((data) => setClientSecret(data.clientSecret));
     }, [price]);
 
@@ -84,15 +80,7 @@ const CheckoutForm = ({ order }) => {
                 email: buyerEmail,
                 orderId: _id
             }
-            fetch(`${import.meta.env.VITE_APP_API_URL}/payments`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
-                },
-                body: JSON.stringify(payment),
-            })
-                .then((res) => res.json())
+            makePayments(payment)
                 .then((data) => {
                     if (data.insertedId) {
                         setIsPaid(true);

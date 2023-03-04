@@ -6,11 +6,13 @@ import FieldError from '../../components/FieldError';
 import { useAuth } from '../../contexts/AuthProvider';
 import toast from 'react-hot-toast';
 import uploadImage from '../../apis/uploadImage';
-import { saveUser } from '../../apis/users';
 import { useJWT } from '../../hooks/useJWT';
 import SpinnerSm from '../../components/SpinnerSm';
+import { useSaveUserMutation } from '../../features/auth/userApi';
 
 const Register = () => {
+    const [saveUser] = useSaveUserMutation();
+
     const [spinner, setSpinner] = useState(false);
     const { createUser, updateUser, userRoleRefetch } = useAuth();
     const navigate = useNavigate();

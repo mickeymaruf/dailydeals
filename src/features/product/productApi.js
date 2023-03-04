@@ -28,12 +28,30 @@ const productApi = apis.injectEndpoints({
             query: (email) => `/myproducts?email=${email}`,
             providesTags: ['MyProducts']
         }),
+
         advertiseProduct: builder.mutation({
             query: (id) => ({
                 url: `/products/${id}`,
                 method: 'PUT'
             }),
             invalidatesTags: ['MyProducts']
+        }),
+
+        getReportedProducts: builder.query({
+            query: () => `/reportedProducts`,
+        }),
+        reportProduct: builder.mutation({
+            query: ({ _id, email, data }) => ({
+                url: `/products/report/${_id}?email=${email}`,
+                method: 'POST',
+                body: data
+            })
+        }),
+        deleteReport: builder.mutation({
+            query: (id) => ({
+                url: `/reportedProducts/${id}`,
+                method: 'DELETE',
+            })
         }),
     })
 })
@@ -44,6 +62,9 @@ export const {
     useAddProductMutation,
     useDeleteProductMutation,
     useGetMyProductsQuery,
-    useAdvertiseProductMutation
+    useAdvertiseProductMutation,
+    useReportProductMutation,
+    useGetReportedProductsQuery,
+    useDeleteReportMutation
 }
     = productApi;

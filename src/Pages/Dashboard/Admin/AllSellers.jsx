@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 import Heading from '../../../components/Heading';
 import Spinner from '../../../components/Spinner';
 import { useAuth } from '../../../contexts/AuthProvider';
+import { useVerifyUserQuery } from '../../../features/auth/userApi';
 
 const AllSellers = () => {
     const { logOut } = useAuth();
@@ -45,12 +46,7 @@ const AllSellers = () => {
     }
 
     const handleVerifyUser = (email, name) => {
-        fetch(`${import.meta.env.VITE_APP_API_URL}/verifyUser?email=${email}`, {
-            headers: {
-                "content-type": "application/json",
-                authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
-            }
-        })
+        useVerifyUserQuery(email)
             .then(res => res.json())
             .then(data => {
                 if (data.modifiedCount > 0) {

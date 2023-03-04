@@ -1,29 +1,15 @@
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import toast from 'react-hot-toast';
 import Heading from '../../../components/Heading';
 import Spinner from '../../../components/Spinner';
+import { useDeleteReportMutation, useGetReportedProductsQuery } from '../../../features/product/productApi';
 
 const ReportedItems = () => {
-    const { data: reportedProducts = [], refetch, isLoading } = useQuery({
-        queryKey: ['reportedProducts'],
-        queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/reportedProducts`, {
-            headers: {
-                authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
-            }
-        })
-            .then(res => res.json())
-    })
+    const { data: reportedProducts = [], refetch, isLoading } = useGetReportedProductsQuery();
+    const [deleteReport] = useDeleteReportMutation();
 
     const handleDeleteReport = id => {
-        fetch(`${import.meta.env.VITE_APP_API_URL}/reportedProducts/${id}`, {
-            method: 'DELETE',
-            headers: {
-                "content-type": "application/json",
-                authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
-            }
-        })
-            .then(res => res.json())
+        deleteReport(id)
             .then(data => {
                 if (data.deletedCount > 0) {
                     refetch();

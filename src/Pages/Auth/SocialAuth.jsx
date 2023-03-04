@@ -4,12 +4,14 @@ import { GoogleAuthProvider } from "firebase/auth";
 import { useAuth } from '../../contexts/AuthProvider';
 import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { saveUser } from '../../apis/users';
 import { useJWT } from '../../hooks/useJWT';
+import { useSaveUserMutation } from '../../features/auth/userApi';
 
 const googleProvider = new GoogleAuthProvider();
 
 const SocialAuth = () => {
+    const [saveUser] = useSaveUserMutation();
+
     const { providerLogin, userRoleRefetch } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
