@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, createUserWithEmailAndPassword, updateProfile, signInWithPopup, signOut } from 'firebase/auth';
 import app from '../firebase/firebase.config';
-import useUserRole from '../hooks/useUserRole';
+import { useUserRoleQuery } from '../features/auth/userApi';
 
 const AuthContext = createContext();
 const auth = getAuth(app);
@@ -10,7 +10,7 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    const [userRole, userRoleIsLoading, userRoleRefetch] = useUserRole(user?.email);
+    const { data: userRole, isLoading: userRoleIsLoading, refetch: userRoleRefetch } = useUserRoleQuery(user?.email);
 
     const login = (email, password) => {
         setLoading(true);

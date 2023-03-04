@@ -2,6 +2,10 @@ import apis from "../apis/apis";
 
 const productApi = apis.injectEndpoints({
     endpoints: (builder) => ({
+        getCategories: builder.query({
+            query: () => `/categories`,
+        }),
+
         getProducts: builder.query({
             query: (slug) => slug ? `/category/${slug}` : `/products`,
         }),
@@ -53,6 +57,10 @@ const productApi = apis.injectEndpoints({
                 method: 'DELETE',
             })
         }),
+
+        getAdvertisedProducts: builder.query({
+            query: () => `/advertisedProducts`,
+        }),
     })
 })
 
@@ -65,6 +73,8 @@ export const {
     useAdvertiseProductMutation,
     useReportProductMutation,
     useGetReportedProductsQuery,
-    useDeleteReportMutation
+    useDeleteReportMutation,
+    useGetCategoriesQuery,
+    useGetAdvertisedProductsQuery
 }
     = productApi;

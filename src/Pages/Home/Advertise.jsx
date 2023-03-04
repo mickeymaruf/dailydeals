@@ -1,5 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { ImLocation } from 'react-icons/im';
 import { MdVerified } from 'react-icons/md';
@@ -7,14 +5,10 @@ import Heading from '../../components/Heading';
 import Spinner from '../../components/Spinner';
 import moment from 'moment';
 import { useIsVerified } from '../../hooks/useIsVerified';
+import { useGetAdvertisedProductsQuery } from '../../features/product/productApi';
 
 const Advertise = () => {
-    const { data: products = [], isLoading } = useQuery({
-        queryKey: ['products'],
-        refetchOnWindowFocus: false,
-        queryFn: () => axios.get(`${import.meta.env.VITE_APP_API_URL}/advertisedProducts`)
-            .then(data => data.data)
-    })
+    const { data: products = [], isLoading } = useGetAdvertisedProductsQuery();
 
     if (!products.length) {
         return

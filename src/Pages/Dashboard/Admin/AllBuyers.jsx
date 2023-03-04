@@ -1,41 +1,19 @@
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import toast from 'react-hot-toast';
 import Heading from '../../../components/Heading';
 import Spinner from '../../../components/Spinner';
+import { useDeleteUserMutation, useGetBuyersQuery } from '../../../features/auth/userApi';
 
 const AllBuyers = () => {
-    const { data: buyers = [], refetch, isLoading } = useQuery({
-        queryKey: ['buyers'],
-        queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/users?role=buyer`, {
-            headers: {
-                authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
-            }
-        })
-            .then(res => {
-                if (res.status === 401 || res.status === 403) {
-                    logOut()
-                    localStorage.removeItem('DAILY_DEALS_ACCESS_TOKEN')
-                    return []
-                }
-                return res.json()
-            })
-    })
+    const { data: buyers = [], isLoading } = useGetBuyersQuery();
+    const [deleteUser] = useDeleteUserMutation();
 
     const handleDeleteUser = (id, name) => {
         const confirmDelete = confirm(`Are your sure want to delete ${name}`);
         if (confirmDelete) {
-            fetch(`${import.meta.env.VITE_APP_API_URL}/users/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    "content-type": "application/json",
-                    authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
-                }
-            })
-                .then(res => res.json())
+            deleteUser(id)
                 .then(data => {
                     if (data.deletedCount > 0) {
-                        refetch()
                         toast.success(`${name} deleted`)
                     }
                 })

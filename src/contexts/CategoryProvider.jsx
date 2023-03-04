@@ -1,15 +1,11 @@
-import React, { createContext } from 'react';
-import axios from 'axios'
-import { useQuery } from '@tanstack/react-query'
+import { createContext } from 'react';
+import { useGetCategoriesQuery } from '../features/product/productApi';
 
 export const CategoryContext = createContext();
 
 const CategoryProvider = ({ children }) => {
-    const { data: categories, isLoading } = useQuery({
-        queryKey: ['categories'],
-        queryFn: () => axios.get(`${import.meta.env.VITE_APP_API_URL}/categories`)
-            .then(data => data.data)
-    })
+    const { data: categories, isLoading } = useGetCategoriesQuery();
+
     return (
         <CategoryContext.Provider value={{ categories, isLoading }}>
             {children}

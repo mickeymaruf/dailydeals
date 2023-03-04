@@ -1,44 +1,23 @@
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import toast from 'react-hot-toast';
 import Heading from '../../../components/Heading';
 import Spinner from '../../../components/Spinner';
 import { useAuth } from '../../../contexts/AuthProvider';
-import { useVerifyUserQuery } from '../../../features/auth/userApi';
+import { useDeleteUserMutation, useGetSellersQuery, useVerifyUserMutation } from '../../../features/auth/userApi';
 
 const AllSellers = () => {
+    const [verifyUser] = useVerifyUserMutation();
+    const [deleteUser] = useDeleteUserMutation();
     const { logOut } = useAuth();
-    const { data: sellers = [], refetch, isLoading } = useQuery({
-        queryKey: ['sellers'],
-        queryFn: () => fetch(`${import.meta.env.VITE_APP_API_URL}/users?role=seller`, {
-            headers: {
-                authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
-            }
-        })
-            .then(res => {
-                if (res.status === 401 || res.status === 403) {
-                    logOut()
-                    localStorage.removeItem('DAILY_DEALS_ACCESS_TOKEN')
-                    return []
-                }
-                return res.json()
-            })
-    })
+
+    const { data: sellers = [], isLoading } = useGetSellersQuery();
 
     const handleDeleteUser = (id, name) => {
         const confirmDelete = confirm(`Are your sure want to delete ${name}`);
         if (confirmDelete) {
-            fetch(`${import.meta.env.VITE_APP_API_URL}/users/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    "content-type": "application/json",
-                    authorization: `Bearer ${localStorage.getItem('DAILY_DEALS_ACCESS_TOKEN')}`
-                }
-            })
-                .then(res => res.json())
+            deleteUser(id)
                 .then(data => {
                     if (data.deletedCount > 0) {
-                        refetch()
                         toast.success(`${name} deleted`)
                     }
                 })
@@ -46,8 +25,7 @@ const AllSellers = () => {
     }
 
     const handleVerifyUser = (email, name) => {
-        useVerifyUserQuery(email)
-            .then(res => res.json())
+        verifyUser(email)
             .then(data => {
                 if (data.modifiedCount > 0) {
                     refetch();
@@ -76,7 +54,7 @@ const AllSellers = () => {
                                 </thead>
                                 <tbody>
                                     {
-                                        sellers.map(user => <tr key={user._id}>
+                                        sellers?.map(user => <tr key={user._id}>
                                             <td>
                                                 <div className="flex items-center space-x-3">
                                                     <div className="avatar">

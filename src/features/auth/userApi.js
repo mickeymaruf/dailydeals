@@ -9,10 +9,34 @@ const userApi = apis.injectEndpoints({
                 body: data
             }),
         }),
-        verifyUser: builder.query({
-            query: (email) => `/verifyUser?email=${email}`,
+        verifyUser: builder.mutation({
+            query: (email) => ({
+                url: `/verifyUser?email=${email}`,
+            }),
+            invalidatesTags: ["Sellers"]
+        }),
+        deleteUser: builder.mutation({
+            query: (id) => ({
+                url: `/users/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Sellers", "Buyers"]
+        }),
+
+        getSellers: builder.query({
+            query: () => `/users?role=seller`,
+            providesTags: ["Sellers"]
+        }),
+        getBuyers: builder.query({
+            query: () => `/users?role=buyer`,
+            providesTags: ["Buyers"]
+        }),
+
+        userRole: builder.query({
+            query: (email) => `/users/role?email=${email}`,
+            transformResponse: (response) => response?.role
         }),
     })
 })
 
-export const { useSaveUserMutation, useVerifyUserQuery } = userApi;
+export const { useSaveUserMutation, useVerifyUserMutation, useGetSellersQuery, useDeleteUserMutation, useGetBuyersQuery, useUserRoleQuery } = userApi;
