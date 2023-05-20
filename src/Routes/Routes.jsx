@@ -18,6 +18,7 @@ import SellerRoute from "./SellerRoute";
 import ErrorPage from "../Pages/Shared/ErrorPage";
 import Payment from "../Pages/Dashboard/Buyer/Payment";
 import Product from "../Pages/Products/Product";
+import Chat from "../Pages/Chat/Chat";
 
 const router = createBrowserRouter([
     {
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
             {
                 path: '/products/:id',
                 element: <Product />,
+            },
+            {
+                path: '/chat',
+                element: <Chat />,
             },
         ],
         errorElement: <ErrorPage />

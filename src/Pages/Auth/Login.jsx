@@ -5,7 +5,6 @@ import SocialAuth from './SocialAuth';
 import { useForm } from 'react-hook-form';
 import FieldError from '../../components/FieldError';
 import toast from 'react-hot-toast';
-import axios from 'axios';
 import { useJWT } from '../../hooks/useJWT';
 import SpinnerSm from '../../components/SpinnerSm';
 

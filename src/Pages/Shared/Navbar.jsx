@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthProvider';
 import logo from '../../assets/images/logo.png'
+import { HiChatBubbleLeftRight } from "react-icons/hi2";
 
 const Navbar = () => {
     const { user, logOut } = useAuth();
@@ -40,6 +41,9 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end">
+                    <Link to="/chat">
+                        <button className="flex items-center gap-1 bg-black bg-opacity-20 p-2 rounded-md mr-5 text-sm"><HiChatBubbleLeftRight size={20} /> Chat</button>
+                    </Link>
                     {
                         user ?
                             <button onClick={handleLogout} className="btn btn-warning">Logout</button>
