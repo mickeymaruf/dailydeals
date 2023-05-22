@@ -2,6 +2,9 @@ import apis from "../apis/apis";
 
 const userApi = apis.injectEndpoints({
     endpoints: (builder) => ({
+        getUser: builder.query({
+            query: (id) => `/users/${id}`
+        }),
         saveUser: builder.mutation({
             query: (data) => ({
                 url: `/users`,
@@ -39,4 +42,4 @@ const userApi = apis.injectEndpoints({
     })
 })
 
-export const { useSaveUserMutation, useVerifyUserMutation, useGetSellersQuery, useDeleteUserMutation, useGetBuyersQuery, useUserRoleQuery } = userApi;
+export const { useSaveUserMutation, useVerifyUserMutation, useGetSellersQuery, useDeleteUserMutation, useGetBuyersQuery, useUserRoleQuery, useGetUserQuery } = userApi;
