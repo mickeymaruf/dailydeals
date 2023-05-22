@@ -6,16 +6,14 @@ const chatApi = apis.injectEndpoints({
             query: (email) => `/conversations/${email}`,
         }),
         getMessages: builder.query({
-            query: (conversationId) => `/messages/${conversationId}`,
-            providesTags: ["Messages"]
+            query: (conversationId) => `/messages/${conversationId}`
         }),
         postMessage: builder.mutation({
             query: (data) => ({
                 url: `/messages`,
                 method: "POST",
                 body: data
-            }),
-            invalidatesTags: ["Messages"]
+            })
         }),
     })
 })

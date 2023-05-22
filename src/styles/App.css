@@ -14,3 +14,22 @@
 .product_Image:hover>.full_view_Icon {
     display: block;
 }
+
+#chat-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Track */
+#chat-messages::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+#chat-messages::-webkit-scrollbar-thumb {
+    background: #cccccc;
+}
+
+/* Handle on hover */
+#chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #a0a0a0;
+}
