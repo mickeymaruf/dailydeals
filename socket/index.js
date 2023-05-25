@@ -1,8 +1,10 @@
+require('dotenv').config()
 const { Server } = require("socket.io");
+const PORT = process.env.PORT || 5001;
 
 const io = new Server({
     cors: {
-        origin: "http://localhost:5173"
+        origins: "*:*",
     }
 });
 
@@ -45,4 +47,4 @@ io.on("connection", (socket) => {
     });
 });
 
-io.listen(5001);
+io.listen(PORT);

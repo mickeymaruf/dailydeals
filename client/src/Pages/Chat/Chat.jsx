@@ -56,7 +56,7 @@ const Chat = () => {
     // socket
 
     useEffect(() => {
-        setSocket(io("ws://localhost:5001"));
+        setSocket(io(`wss://dailydeals.onrender.com`));
 
         socket?.on("getMessage", data => {
             console.log(data);
