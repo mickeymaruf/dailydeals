@@ -42,4 +42,4 @@ const userApi = apis.injectEndpoints({
     })
 })
 
-export const { useSaveUserMutation, useVerifyUserMutation, useGetSellersQuery, useDeleteUserMutation, useGetBuyersQuery, useUserRoleQuery, useGetUserQuery } = userApi;
+export const { useSaveUserMutation, useVerifyUserMutation, useGetSellersQuery, useDeleteUserMutation, useGetBuyersQuery, useUserRoleQuery, useGetUserQuery, useLazyGetUserQuery } = userApi;

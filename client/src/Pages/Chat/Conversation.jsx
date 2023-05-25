@@ -4,7 +4,7 @@ import { MdVerified } from 'react-icons/md';
 const Conversation = ({ conversation, user, activeUsers }) => {
     const friendEmail = conversation.members.find(member => member !== user?.email);
     const { data: friend } = useGetUserQuery(friendEmail, { skip: !friendEmail });
-    
+
     return (
         <div className="py-3 px-6 flex items-start gap-3 hover:bg-gray-100 border-b cursor-pointer">
             <div className="relative">
