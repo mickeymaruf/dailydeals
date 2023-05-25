@@ -17,17 +17,16 @@ const Products = () => {
         <div className="max-w-screen-lg mx-auto bg-white md:my-8 lg:border rounded-sm lg:grid grid-cols-12">
             <div className='border-r col-span-3 p-5'>
                 <p className='text-sm text-accent mb-3 border-b pb-2'>Category</p>
-                <p className='mb-2 font-medium'>All Categories</p>
-                <ul className="menu menu-compact bg-base-100 mt-4">
+                <p className='md:mb-2 font-medium'>All Categories</p>
+                <ul className="menu menu-compact mt-4 menu-horizontal md:menu-vertical w-full">
                     {
-                        isLoading ?
-                            <progress className="progress progress-primary w-full"></progress>
-                            :
-                            <>
-                                <li><Link to={`/products`}>All</Link></li>
+                        isLoading
+                            ? <progress className="progress progress-primary w-full"></progress>
+                            : <>
+                                <li><Link to={`/products`} className="bg-base-100 hover:bg-base-200 active:text-gray-900">All</Link></li>
                                 {
                                     categories?.map(category => <li key={category._id}>
-                                        <Link to={`/category/${category.slug}`}>{category.name}</Link>
+                                        <Link to={`/category/${category.slug}`} className="bg-base-100 hover:bg-base-200 active:text-gray-900">{category.name}</Link>
                                     </li>)
                                 }
                             </>

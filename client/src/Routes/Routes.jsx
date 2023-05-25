@@ -51,7 +51,7 @@ const router = createBrowserRouter([
             },
             {
                 path: '/chat',
-                element: <Chat />,
+                element: <RequireAuth><Chat /></RequireAuth>,
             },
         ],
         errorElement: <ErrorPage />
